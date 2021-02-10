@@ -21,6 +21,7 @@ class MainWindow : public QMainWindow
 
     void closeEvent(QCloseEvent*);
 
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -32,10 +33,16 @@ public:
     int get_quality();
     void set_quality(int);
     const QRect get_selected_area() const;
+    void set_enable_crop(bool b);
+    void set_enable_copy(bool b);
+    void set_enable_auto_save(bool b);
 
     void set_selected_area(QRect);
     QRect selected_area;
 
+    bool is_crop_enabled;
+    bool is_auto_save_enabled;
+    bool is_copy_enabled;
 
 public slots:
     void quit();
@@ -49,6 +56,11 @@ private slots:
     void on_btn_select_area_clicked();
     void on_btn_reset_area_clicked();
     void on_quality_slider_valueChanged(int value);
+    void on_cb_enable_crop_toggled(bool checked);
+
+    void on_cb_enable_autosave_toggled(bool checked);
+
+    void on_cb_enable_clipboard_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;

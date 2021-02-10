@@ -2,6 +2,9 @@
 #include "mainwindow.h"
 #include "settings.h"
 
+#include "areaselector.h"
+#include <QClipboard>
+
 #include <QDebug>
 #include <QGuiApplication>
 #include <QPixmap>
@@ -16,6 +19,7 @@ ScreenHandler::ScreenHandler(MainWindow *parent)
 }
 
 void ScreenHandler::do_screenshot()
+// fyi i know this function is too long and I hate it and it's ugly...
 {
     QElapsedTimer timer;
     timer.start();
@@ -58,9 +62,20 @@ void ScreenHandler::do_screenshot()
     if (area.topLeft()!=area.bottomRight())
         canvas = canvas.copy(area);
 
-    qDebug() << "Abs path: " << absolute_path;
-    if (!canvas.save(absolute_path, "", quality))
+    // area selector
+    if (mw->is_crop_enabled)
+    {
+        AreaSelector selector(canvas);
+        selector.exec();
+        area = selector.get_area();
+        canvas = canvas.copy(area);
+    }
+    if (mw->is_auto_save_enabled && !canvas.save(absolute_path, "", quality))
         qDebug() << "Failed to save";
-
+    if (mw->is_copy_enabled)
+    {
+        QClipboard *clipboard = QGuiApplication::clipboard();
+        clipboard->setPixmap(canvas);
+    }
     qDebug() << "Elapsed time: " << timer.elapsed();
 }

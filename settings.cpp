@@ -14,6 +14,9 @@ void Settings::load()
         MsgBox("Error, could not load settings");
 
     save_path =	value("SAVE_PATH").toString();
+    mw->set_enable_crop(value("ENABLE_CROP").toBool());
+    mw->set_enable_auto_save(value("AUTO_SAVE").toBool());
+    mw->set_enable_copy(value("CLIPBOARD").toBool());
     mw->set_custom_save(value("CUSTOM_SAVE").toBool());
     mw->set_custom_save_path(save_path);
     mw->set_selected_area(QRect(value("START_POINT").toPoint(), value("END_POINT").toPoint()));
@@ -37,6 +40,9 @@ void Settings::save()
         mw->set_custom_save_path(default_save_path);
     }
 
+    setValue("ENABLE_CROP", mw->is_crop_enabled);
+    setValue("AUTO_SAVE", mw->is_auto_save_enabled);
+    setValue("CLIPBOARD", mw->is_copy_enabled);
     setValue("CUSTOM_SAVE", mw->is_custom_save());
     setValue("SAVE_PATH", save_path);
     setValue("START_POINT", mw->selected_area.topLeft());

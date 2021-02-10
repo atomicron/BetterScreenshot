@@ -81,10 +81,33 @@ const QRect MainWindow::get_selected_area() const
     return selected_area;
 }
 
+void MainWindow::set_enable_crop(bool b)
+{
+    is_crop_enabled = b;
+    ui->cb_enable_crop->setChecked(b);
+}
+
+void MainWindow::set_enable_copy(bool b)
+{
+    is_copy_enabled = b;
+    ui->cb_enable_clipboard->setChecked(b);
+}
+
+void MainWindow::set_enable_auto_save(bool b)
+{
+   is_auto_save_enabled = b;
+   ui->cb_enable_autosave->setChecked(b);
+}
+
 void MainWindow::set_selected_area(QRect rect)
 {
-   ui->lbl_start_point->setText("Start point: " + QString::number(rect.topLeft().x()) +','+ QString::number(rect.topLeft().y()));
-   ui->lbl_end_point->setText("End point: " + QString::number(rect.bottomRight().x()) +','+ QString::number(rect.bottomRight().y()));
+    ui->lbl_start_point->setText("Start point: " + QString::number(rect.topLeft().x()) +','+ QString::number(rect.topLeft().y()));
+    ui->lbl_end_point->setText("End point: " + QString::number(rect.bottomRight().x()) +','+ QString::number(rect.bottomRight().y()));
+    if (rect.size()==QSize(0,0))
+    {
+        ui->lbl_end_point->clear();
+        ui->lbl_start_point->clear();
+    }
 }
 
 void MainWindow::on_cb_custom_savepath_toggled(bool checked)
@@ -128,9 +151,10 @@ void MainWindow::on_btn_quit_clicked()
 
 void MainWindow::on_btn_select_area_clicked()
 {
-   AreaSelector select(this);
-   selected_area = select.get_area();
-   set_selected_area(selected_area);
+    AreaSelector select;
+    select.exec();
+    selected_area = select.get_area();
+    set_selected_area(selected_area);
 }
 
 void MainWindow::on_btn_reset_area_clicked()
@@ -142,6 +166,21 @@ void MainWindow::on_btn_reset_area_clicked()
 
 void MainWindow::on_quality_slider_valueChanged(int value)
 {
-   ui->lbl_qs_val->setText(QString::number(value));
+    ui->lbl_qs_val->setText(QString::number(value));
 }
 
+
+void MainWindow::on_cb_enable_crop_toggled(bool checked)
+{
+    is_crop_enabled = checked;
+}
+
+void MainWindow::on_cb_enable_autosave_toggled(bool checked)
+{
+    is_auto_save_enabled = checked;
+}
+
+void MainWindow::on_cb_enable_clipboard_toggled(bool checked)
+{
+    is_copy_enabled = checked;
+}

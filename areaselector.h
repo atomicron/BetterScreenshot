@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QPoint>
 #include <QDialog>
+#include <QRubberBand>
 
 class AreaSelector : public QDialog
 {
@@ -18,8 +19,11 @@ class AreaSelector : public QDialog
 
     QRect area;
 
+    QRubberBand* rubber_band;
+
 public:
     explicit AreaSelector(QWidget *parent = nullptr);
+    explicit AreaSelector(QPixmap, QWidget *parent = nullptr);
     ~AreaSelector();
 
     void mousePressEvent(QMouseEvent *event);
