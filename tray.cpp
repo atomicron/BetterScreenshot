@@ -1,9 +1,12 @@
 #include "tray.h"
+#include <QDir>
+#include <QDebug>
 
 Tray::Tray(QObject *parent) : QSystemTrayIcon(parent)
   , menu(new QMenu)
 {
-    setIcon(QIcon("E:\\Qt\\Projects\\BetterScreenshot\\BS.png"));
+//    qDebug()<< QDir::currentPath() + "/BS.png";
+    setIcon(QIcon(QDir::currentPath() + "/BS.png"));
     setVisible(true);
 
     settings = new QAction("Settings");
