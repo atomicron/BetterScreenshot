@@ -9,6 +9,8 @@
 #include "settings.h"
 #include "screenhandler.h"
 
+#include <QMouseEvent>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -28,6 +30,12 @@ public:
     bool is_custom_save();
     void set_custom_save(bool b);
     int get_quality();
+    void set_quality(int);
+    const QRect get_selected_area() const;
+
+    void set_selected_area(QRect);
+    QRect selected_area;
+
 
 public slots:
     void quit();
@@ -38,6 +46,8 @@ private slots:
     void on_btn_browse_dir_clicked();
     void on_btn_save_clicked();
     void on_btn_quit_clicked();
+    void on_btn_select_area_clicked();
+    void on_btn_reset_area_clicked();
     void on_quality_slider_valueChanged(int value);
 
 private:

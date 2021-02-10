@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>319</width>
+    <width>299</width>
     <height>327</height>
    </rect>
   </property>
@@ -81,6 +81,9 @@
       <height>17</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>I advice against checking this option, unless you certainly want the print screen signal to be passed to other applications.</string>
+    </property>
     <property name="text">
      <string>Check this to send signal down the chain</string>
     </property>
@@ -88,7 +91,7 @@
    <widget class="QPushButton" name="btn_quit">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>280</y>
       <width>75</width>
       <height>23</height>
@@ -98,7 +101,7 @@
      <string>Quit</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -124,7 +127,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -169,7 +172,7 @@ compression</string>
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>30</x>

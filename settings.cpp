@@ -16,6 +16,8 @@ void Settings::load()
     save_path =	value("SAVE_PATH").toString();
     mw->set_custom_save(value("CUSTOM_SAVE").toBool());
     mw->set_custom_save_path(save_path);
+    mw->set_selected_area(QRect(value("START_POINT").toPoint(), value("END_POINT").toPoint()));
+    mw->set_quality(value("QUALITY").toInt());
     if (!QDir(save_path).exists())
     {
         MsgBox("The screenshots path does not exist anymore\nLikely it has been deleted."
@@ -37,5 +39,7 @@ void Settings::save()
 
     setValue("CUSTOM_SAVE", mw->is_custom_save());
     setValue("SAVE_PATH", save_path);
-    // get point
+    setValue("START_POINT", mw->selected_area.topLeft());
+    setValue("END_POINT", mw->selected_area.bottomRight());
+    setValue("QUALITY", mw->get_quality());
 }

@@ -3,7 +3,8 @@
 
 #include "msgbox.h"
 
-#include <QDebug> // remove later
+#include "areaselector.h"
+
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileDialog>
@@ -19,17 +20,12 @@ MainWindow::MainWindow(QWidget *parent)
     , sh(new ScreenHandler(this))
 {
     ui->setupUi(this);
-
-//    kh = &KeyHandler().Instance(this);
-
     kh->enable_hook();
     settings->load();
-
 }
 
 MainWindow::~MainWindow()
 {
-    qDebug() << "Disabling hook and destroying kh, tray";
     kh->disable_hook();
     delete ui;
 }
@@ -75,6 +71,22 @@ int MainWindow::get_quality()
     return ui->quality_slider->value();
 }
 
+void MainWindow::set_quality(int val)
+{
+   ui->quality_slider->setValue(val);
+}
+
+const QRect MainWindow::get_selected_area() const
+{
+    return selected_area;
+}
+
+void MainWindow::set_selected_area(QRect rect)
+{
+   ui->lbl_start_point->setText("Start point: " + QString::number(rect.topLeft().x()) +','+ QString::number(rect.topLeft().y()));
+   ui->lbl_end_point->setText("End point: " + QString::number(rect.bottomRight().x()) +','+ QString::number(rect.bottomRight().y()));
+}
+
 void MainWindow::on_cb_custom_savepath_toggled(bool checked)
 {
     ui->input_custom_path->setEnabled(checked);
@@ -114,7 +126,22 @@ void MainWindow::on_btn_quit_clicked()
     QApplication::quit();
 }
 
+void MainWindow::on_btn_select_area_clicked()
+{
+   AreaSelector select(this);
+   selected_area = select.get_area();
+   set_selected_area(selected_area);
+}
+
+void MainWindow::on_btn_reset_area_clicked()
+{
+    selected_area = QRect(0,0,0,0);
+    ui->lbl_start_point->clear();
+    ui->lbl_end_point->clear();
+}
+
 void MainWindow::on_quality_slider_valueChanged(int value)
 {
    ui->lbl_qs_val->setText(QString::number(value));
 }
+

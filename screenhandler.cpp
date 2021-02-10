@@ -54,9 +54,13 @@ void ScreenHandler::do_screenshot()
     QString format = ".png";
     int quality = mw->get_quality();
 
+    QRect area = mw->get_selected_area();
+    if (area.topLeft()!=area.bottomRight())
+        canvas = canvas.copy(area);
+
     qDebug() << "Abs path: " << absolute_path;
     if (!canvas.save(absolute_path, "", quality))
         qDebug() << "Failed to save";
 
-   qDebug() << "Elapsed time: " << timer.elapsed();
+    qDebug() << "Elapsed time: " << timer.elapsed();
 }
