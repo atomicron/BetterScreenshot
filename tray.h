@@ -16,6 +16,8 @@ public:
     explicit Tray(QObject *parent = nullptr);
     ~Tray();
 
+    void show_msg(QString arg);
+
 public slots:
 
     void show_context_menu(QSystemTrayIcon::ActivationReason);

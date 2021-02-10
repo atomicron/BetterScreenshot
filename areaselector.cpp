@@ -12,7 +12,7 @@ AreaSelector::AreaSelector(QWidget *parent) : QDialog(parent)
     installEventFilter(this);
     setWindowFlags(windowFlags() | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
     setWindowState(windowState() | Qt::WindowFullScreen);
-    setWindowOpacity(0.1);
+    setWindowOpacity(0.2);
 
     QScreen* scr  = QGuiApplication::primaryScreen();
     setFixedSize(scr->virtualSize());

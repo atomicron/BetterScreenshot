@@ -98,16 +98,24 @@ void MainWindow::set_enable_auto_save(bool b)
    is_auto_save_enabled = b;
    ui->cb_enable_autosave->setChecked(b);
 }
-
+#include <QDebug>
 void MainWindow::set_selected_area(QRect rect)
 {
     ui->lbl_start_point->setText("Start point: " + QString::number(rect.topLeft().x()) +','+ QString::number(rect.topLeft().y()));
     ui->lbl_end_point->setText("End point: " + QString::number(rect.bottomRight().x()) +','+ QString::number(rect.bottomRight().y()));
+    qDebug() << "Select area set to: " << rect.size();
     if (rect.size()==QSize(0,0))
     {
         ui->lbl_end_point->clear();
         ui->lbl_start_point->clear();
     }
+    else
+        selected_area = rect;
+}
+
+void MainWindow::tray_say(QString arg)
+{
+   tray->show_msg(arg);
 }
 
 void MainWindow::on_cb_custom_savepath_toggled(bool checked)

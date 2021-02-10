@@ -22,10 +22,16 @@ Tray::~Tray()
 {
    delete settings;
    delete quit;
-   delete menu;
+    delete menu;
+}
+
+void Tray::show_msg(QString arg)
+{
+    QString title = "BetterScreenshot";
+    showMessage(title, arg);
 }
 
 void Tray::show_context_menu(ActivationReason)
 {
-   menu->show();
+    menu->show();
 }

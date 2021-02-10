@@ -76,6 +76,8 @@ void ScreenHandler::do_screenshot()
     {
         QClipboard *clipboard = QGuiApplication::clipboard();
         clipboard->setPixmap(canvas);
+        // ask someone to pop a tray notification
+        mw->tray_say("Copied to clipboard :)");
     }
     qDebug() << "Elapsed time: " << timer.elapsed();
 }

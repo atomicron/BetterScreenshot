@@ -44,6 +44,8 @@ public:
     bool is_auto_save_enabled;
     bool is_copy_enabled;
 
+    void tray_say(QString);
+
 public slots:
     void quit();
     void do_snapshot();
