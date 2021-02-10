@@ -9,14 +9,26 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    keyhandler.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    msgbox.cpp \
+    screenhandler.cpp \
+    settings.cpp \
+    tray.cpp
 
 HEADERS += \
-    mainwindow.h
+    keyhandler.h \
+    mainwindow.h \
+    msgbox.h \
+    screenhandler.h \
+    settings.h \
+    tray.h
 
 FORMS += \
     mainwindow.ui
+
+LIBS += -luser32
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
