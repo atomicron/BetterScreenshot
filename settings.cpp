@@ -13,6 +13,7 @@ Settings::Settings(MainWindow *parent)
 const QString ENABLE_CROP = "ENABLE_CROP";
 const QString AUTO_SAVE = "AUTO_SAVE";
 const QString CLIPBOARD = "CLIPBOARD";
+const QString TRAY_POP_UP = "TRAY_POP_UP";
 const QString CUSTOM_SAVE = "CUSTOM_SAVE";
 const QString SAVE_PATH = "SAVE_PATH";
 const QString START_POINT = "START_POINT";
@@ -27,6 +28,7 @@ void Settings::load()
     mw->set_enable_crop(value(ENABLE_CROP).toBool());
     mw->set_enable_auto_save(value(AUTO_SAVE).toBool());
     mw->set_enable_copy(value(CLIPBOARD).toBool());
+    mw->set_enable_tray_pop_up(value(TRAY_POP_UP).toBool());
     mw->set_enable_custom_save(value(CUSTOM_SAVE).toBool());
     mw->set_save_path(value(SAVE_PATH).toString());
     mw->set_selected_area(QRect(value(START_POINT).toPoint(), value(END_POINT).toPoint()));
@@ -38,6 +40,7 @@ void Settings::save()
     setValue(ENABLE_CROP, mw->is_crop_enabled);
     setValue(AUTO_SAVE, mw->is_auto_save_enabled);
     setValue(CLIPBOARD, mw->is_copy_enabled);
+    setValue(TRAY_POP_UP, mw->is_tray_pop_up_enabled());
     setValue(CUSTOM_SAVE, mw->is_custom_save());
     setValue(SAVE_PATH, mw->get_save_path());
     setValue(START_POINT, mw->selected_area.topLeft());

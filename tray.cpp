@@ -43,8 +43,14 @@ Tray::~Tray()
 
 void Tray::show_msg(QString arg)
 {
+    if (!is_enable_pop_up) return;
     QString title = "BetterScreenshot";
     showMessage(title, arg);
+}
+
+void Tray::set_enable_pop_up(bool b)
+{
+   is_enable_pop_up = b;
 }
 
 void Tray::show_context_menu(ActivationReason)

@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/resources">
         <file>BS.png</file>
+        <file>BS_256x256.ico</file>
     </qresource>
     <qresource prefix="/">
         <file>Deisgner.qml</file>

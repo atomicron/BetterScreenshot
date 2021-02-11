@@ -80,6 +80,11 @@ int MainWindow::get_quality()
     return ui->quality_slider->value();
 }
 
+bool MainWindow::is_tray_pop_up_enabled()
+{
+   return ui->cb_enable_tray_pop_up->isChecked();
+}
+
 void MainWindow::set_quality(int val)
 {
     ui->quality_slider->setValue(val);
@@ -100,6 +105,12 @@ void MainWindow::set_enable_copy(bool b)
 {
     is_copy_enabled = b;
     ui->cb_enable_clipboard->setChecked(b);
+}
+
+void MainWindow::set_enable_tray_pop_up(bool b)
+{
+   tray->set_enable_pop_up(b);
+   ui->cb_enable_tray_pop_up->setChecked(b);
 }
 
 void MainWindow::set_enable_auto_save(bool b)
@@ -197,3 +208,7 @@ void MainWindow::on_input_custom_path_textChanged(const QString &arg1)
         ui->input_custom_path->setStyleSheet("QLineEdit {background-color: white;}");
 }
 
+void MainWindow::on_cb_enable_tray_pop_up_toggled(bool checked)
+{
+    tray->set_enable_pop_up(checked);
+}

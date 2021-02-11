@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>338</width>
-    <height>168</height>
+    <height>183</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
       <x>30</x>
       <y>60</y>
       <width>271</width>
-      <height>71</height>
+      <height>91</height>
      </rect>
     </property>
     <property name="title">
@@ -63,8 +63,31 @@
        <height>17</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Copies the screenshot (or selected area if the above option is clicked)
+to your clipboard so you can Ctrl + V</string>
+     </property>
      <property name="text">
       <string>Copy to clipboard</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="cb_enable_tray_pop_up">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>60</y>
+       <width>161</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Enable or disable the annoying pop up message from the tray icon.</string>
+     </property>
+     <property name="text">
+      <string>Enable tray pop up message</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -297,6 +320,10 @@ compression</string>
       <height>16</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>As a alternative (or preferred method) use the Print Screen button
+on your keyboard to take a screenshot</string>
+    </property>
     <property name="text">
      <string>or use your Print Screen button</string>
     </property>
@@ -309,6 +336,9 @@ compression</string>
       <width>131</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>Click to do a Screenshot</string>
     </property>
     <property name="text">
      <string>Snipe</string>

@@ -20,11 +20,14 @@ class Tray : protected QSystemTrayIcon
     QAction* snipe;
     QAction* open_save_dir;
 
+    bool is_enable_pop_up;
+
 public:
     explicit Tray(MainWindow *parent = nullptr);
     ~Tray();
 
     void show_msg(QString arg);
+    void set_enable_pop_up(bool);
 
 public slots:
 

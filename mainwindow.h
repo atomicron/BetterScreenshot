@@ -29,11 +29,13 @@ public:
     QString get_save_path();
     bool is_custom_save();
     int get_quality();
+    bool is_tray_pop_up_enabled();
     const QRect get_selected_area() const;
 
     void set_enable_crop(bool b);
     void set_enable_auto_save(bool b);
     void set_enable_copy(bool b);
+    void set_enable_tray_pop_up(bool b);
     void set_enable_custom_save(bool b);
     void set_save_path(QString);
     void set_selected_area(QRect);
@@ -64,6 +66,9 @@ private slots:
     void on_cb_enable_clipboard_toggled(bool checked);
     void on_btn_snipe_clicked();
     void on_input_custom_path_textChanged(const QString &arg1);
+    void on_cb_enable_tray_pop_up_toggled(bool checked);
+
+
 
 private:
     Ui::MainWindow *ui;

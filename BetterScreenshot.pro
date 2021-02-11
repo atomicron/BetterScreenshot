@@ -39,3 +39,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resource_file.qrc
+
+win32:RC_ICONS += BS_256x256.ico
+
