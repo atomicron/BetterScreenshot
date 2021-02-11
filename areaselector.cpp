@@ -3,6 +3,7 @@
 #include <QDebug>
 #include<QGuiApplication>
 #include <QScreen>
+#include <QPainter>
 
 int min(int a, int b) { return a<b ? a : b; }
 int max(int a, int b) { return a>b ? a : b; }
@@ -34,12 +35,13 @@ AreaSelector::AreaSelector(QPixmap pm, QWidget *parent) : QDialog(parent)
 
     setFixedSize(pm.size());
 
-//    offset_x = scr->virtualGeometry().topLeft().x();
-//    offset_y = scr->virtualGeometry().topLeft().y();
-//    move(offset_x, offset_y);
+    QPainter painter(&pm);
+    painter.setOpacity(0.33);
+    painter.fillRect(QRect(0, 0, pm.size().width(), pm.size().height()), QColor("gray"));
 
     QPalette palette;
     palette.setBrush(QPalette::Background, pm);
+
     this->setPalette(palette);
 
     setCursor(Qt::CrossCursor);
@@ -55,7 +57,6 @@ void AreaSelector::mousePressEvent(QMouseEvent *event)
 //    start = QCursor::pos();
     start = event->pos();
     rubber_band = new QRubberBand(QRubberBand::Rectangle, this);
-//    rubber_band->setGeometry(QRect(start, QSize()));
     rubber_band->show();
 }
 
@@ -68,10 +69,6 @@ void AreaSelector::mouseReleaseEvent(QMouseEvent *event)
 {
     rubber_band->hide();
     delete rubber_band;
-    // determine selection, for example using QRect::intersects()
-    // and QRect::contains().
-
-//    end = QCursor::pos();
     end = event->pos();
 
     int leftmost = min(start.x(), end.x());

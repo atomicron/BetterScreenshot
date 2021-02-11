@@ -11,20 +11,40 @@
 #include <QPainter>
 #include <QElapsedTimer>
 
+const QString ScreenHandler::get_absolute_save_path()
+{
+    QString save_path = mw->get_save_path();
+    QString count_string = QString::number(QDir(save_path).count());
+    QString prefix = "screenshot";
+    QString format = ".png";
+
+    QString name = prefix + "_" + count_string + format;
+
+    QString absolute_path = save_path + "/" + name;
+    return absolute_path;
+}
+
+int ScreenHandler::get_offset(int arg)
+{
+    if (arg < 0) arg = -arg;
+    else arg = 0;
+    return arg;
+}
+
 ScreenHandler::ScreenHandler(MainWindow *parent)
     : QWidget(parent)
     , mw(parent)
 {
     scr = QGuiApplication::primaryScreen();
+    full_size = scr->virtualSize();
 }
 
 void ScreenHandler::do_screenshot()
 // fyi i know this function is too long and I hate it and it's ugly...
 {
+    mw->in_shot=true;
     QElapsedTimer timer;
     timer.start();
-
-    QSize full_size = scr->virtualSize();
 
     QPixmap canvas(full_size);
     canvas.fill(Qt::black);
@@ -34,13 +54,8 @@ void ScreenHandler::do_screenshot()
 
     QPainter painter(&canvas);
 
-    int offset_x = scr->virtualGeometry().topLeft().x();
-    int offset_y = scr->virtualGeometry().topLeft().y();
-
-    if (offset_x < 0) offset_x = -offset_x;
-    else offset_x = 0;
-    if (offset_y < 0) offset_y = -offset_y;
-    else offset_y = 0;
+    int offset_x = get_offset(scr->virtualGeometry().topLeft().x());
+    int offset_y = get_offset(scr->virtualGeometry().topLeft().y());
 
     for (int i=0; i<screens_list.size(); ++i)
     {
@@ -50,12 +65,6 @@ void ScreenHandler::do_screenshot()
                    pml[i]);
     }
     painter.end();
-
-    QString save_path = mw->get_custom_save_path();
-    int count = QDir(save_path).count();
-    QString count_string = QString::number(count);
-    QString absolute_path = save_path+"/screenshot_"+count_string+".png";
-    QString format = ".png";
     int quality = mw->get_quality();
 
     QRect area = mw->get_selected_area();
@@ -66,11 +75,12 @@ void ScreenHandler::do_screenshot()
     if (mw->is_crop_enabled)
     {
         AreaSelector selector(canvas);
+        selector.move(-offset_x, -offset_y);
         selector.exec();
         area = selector.get_area();
         canvas = canvas.copy(area);
     }
-    if (mw->is_auto_save_enabled && !canvas.save(absolute_path, "", quality))
+    if (mw->is_auto_save_enabled && !canvas.save(get_absolute_save_path(), "", quality))
         qDebug() << "Failed to save";
     if (mw->is_copy_enabled)
     {
@@ -80,4 +90,5 @@ void ScreenHandler::do_screenshot()
         mw->tray_say("Copied to clipboard :)");
     }
     qDebug() << "Elapsed time: " << timer.elapsed();
+    mw->in_shot=false;
 }

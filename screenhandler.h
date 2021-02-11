@@ -12,6 +12,10 @@ class ScreenHandler : public QWidget
 
     MainWindow* mw;
     QScreen* scr;
+    QSize full_size;
+
+    const QString get_absolute_save_path();
+    int get_offset(int);
 
 public:
     explicit ScreenHandler(MainWindow *parent = nullptr);

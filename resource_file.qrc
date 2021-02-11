@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/resources">
+        <file>BS.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>Deisgner.qml</file>
+        <file>DeisgnerForm.ui.qml</file>
+    </qresource>
+</RCC>

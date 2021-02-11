@@ -26,43 +26,44 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    QString get_custom_save_path();
-    void set_custom_save_path(QString);
+    QString get_save_path();
     bool is_custom_save();
-    void set_custom_save(bool b);
     int get_quality();
-    void set_quality(int);
     const QRect get_selected_area() const;
+
     void set_enable_crop(bool b);
-    void set_enable_copy(bool b);
     void set_enable_auto_save(bool b);
-
+    void set_enable_copy(bool b);
+    void set_enable_custom_save(bool b);
+    void set_save_path(QString);
     void set_selected_area(QRect);
-    QRect selected_area;
+    void set_quality(int);
 
+    QRect selected_area;
+    QString save_path;
     bool is_crop_enabled;
     bool is_auto_save_enabled;
     bool is_copy_enabled;
 
+    bool in_shot = false;
+
     void tray_say(QString);
 
 public slots:
-    void quit();
+    void custom_quit();
     void do_snapshot();
 
 private slots:
     void on_cb_custom_savepath_toggled(bool checked);
     void on_btn_browse_dir_clicked();
-    void on_btn_save_clicked();
-    void on_btn_quit_clicked();
     void on_btn_select_area_clicked();
     void on_btn_reset_area_clicked();
     void on_quality_slider_valueChanged(int value);
     void on_cb_enable_crop_toggled(bool checked);
-
     void on_cb_enable_autosave_toggled(bool checked);
-
     void on_cb_enable_clipboard_toggled(bool checked);
+    void on_btn_snipe_clicked();
+    void on_input_custom_path_textChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;

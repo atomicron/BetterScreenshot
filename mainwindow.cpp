@@ -9,6 +9,7 @@
 #include <QDir>
 #include <QFileDialog>
 
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,6 +23,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     kh->enable_hook();
     settings->load();
+    on_btn_reset_area_clicked();
+    hide();
+
+    setWindowTitle("Better Screenshot");
+    setWindowIcon(QIcon(":/resources/BS.png"));
 }
 
 MainWindow::~MainWindow()
@@ -30,14 +36,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::quit()
+void MainWindow::custom_quit()
 {
+    settings->save();
     QApplication::quit();
 }
 
 void MainWindow::do_snapshot()
 {
-    sh->do_screenshot();
+    if (!in_shot)
+        sh->do_screenshot();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -46,14 +54,15 @@ void MainWindow::closeEvent(QCloseEvent *event)
     event->ignore();
 }
 
-QString MainWindow::get_custom_save_path()
+QString MainWindow::get_save_path()
 {
     return ui->input_custom_path->text();
 }
 
-void MainWindow::set_custom_save_path(QString path)
+void MainWindow::set_save_path(QString path)
 {
-   ui->input_custom_path->setText(path);
+    save_path = path;
+    ui->input_custom_path->setText(path);
 }
 
 bool MainWindow::is_custom_save()
@@ -61,7 +70,7 @@ bool MainWindow::is_custom_save()
     return ui->cb_custom_savepath->isChecked();
 }
 
-void MainWindow::set_custom_save(bool b)
+void MainWindow::set_enable_custom_save(bool b)
 {
     ui->cb_custom_savepath->setChecked(b);
 }
@@ -73,7 +82,7 @@ int MainWindow::get_quality()
 
 void MainWindow::set_quality(int val)
 {
-   ui->quality_slider->setValue(val);
+    ui->quality_slider->setValue(val);
 }
 
 const QRect MainWindow::get_selected_area() const
@@ -95,15 +104,14 @@ void MainWindow::set_enable_copy(bool b)
 
 void MainWindow::set_enable_auto_save(bool b)
 {
-   is_auto_save_enabled = b;
-   ui->cb_enable_autosave->setChecked(b);
+    is_auto_save_enabled = b;
+    ui->cb_enable_autosave->setChecked(b);
 }
-#include <QDebug>
+
 void MainWindow::set_selected_area(QRect rect)
 {
     ui->lbl_start_point->setText("Start point: " + QString::number(rect.topLeft().x()) +','+ QString::number(rect.topLeft().y()));
     ui->lbl_end_point->setText("End point: " + QString::number(rect.bottomRight().x()) +','+ QString::number(rect.bottomRight().y()));
-    qDebug() << "Select area set to: " << rect.size();
     if (rect.size()==QSize(0,0))
     {
         ui->lbl_end_point->clear();
@@ -115,15 +123,15 @@ void MainWindow::set_selected_area(QRect rect)
 
 void MainWindow::tray_say(QString arg)
 {
-   tray->show_msg(arg);
+    tray->show_msg(arg);
 }
 
 void MainWindow::on_cb_custom_savepath_toggled(bool checked)
 {
     ui->input_custom_path->setEnabled(checked);
     ui->btn_browse_dir->setEnabled(checked);
-    if (checked)
-        ui->input_custom_path->setText(settings->get_default_save_path());
+    if (!checked)
+        ui->input_custom_path->setText(settings->default_save_path);
 }
 
 void MainWindow::on_btn_browse_dir_clicked()
@@ -135,26 +143,6 @@ void MainWindow::on_btn_browse_dir_clicked()
 
     fdlg.exec();
     ui->input_custom_path->setText(fdlg.directory().path());
-}
-
-void MainWindow::on_btn_save_clicked()
-{
-    const QString entered_path = ui->input_custom_path->text();
-    QDir dir(entered_path);
-    if (!dir.exists())
-    {
-        if (!QDir().mkdir(entered_path) || !dir.isAbsolute())
-        {
-            MsgBox("Cannot create custom save path\n" + entered_path);
-        }
-    }
-    settings->save();
-    MsgBox("Saved");
-}
-
-void MainWindow::on_btn_quit_clicked()
-{
-    QApplication::quit();
 }
 
 void MainWindow::on_btn_select_area_clicked()
@@ -192,3 +180,20 @@ void MainWindow::on_cb_enable_clipboard_toggled(bool checked)
 {
     is_copy_enabled = checked;
 }
+
+void MainWindow::on_btn_snipe_clicked()
+{
+   sh->do_screenshot();
+}
+
+void MainWindow::on_input_custom_path_textChanged(const QString &arg1)
+{
+    set_save_path(arg1);
+    QDir path(arg1);
+
+    if (!path.exists() || !path.isAbsolute())
+        ui->input_custom_path->setStyleSheet("QLineEdit {background-color: red;}");
+    else
+        ui->input_custom_path->setStyleSheet("QLineEdit {background-color: white;}");
+}
+
