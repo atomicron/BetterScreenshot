@@ -130,6 +130,7 @@ void ScreenHandler::do_snipe()
     if (selector.is_accepted() && mw->is_auto_save_enabled && !canvas.save(get_absolute_save_path(), "", mw->get_quality()))
         qDebug() << "Failed to save";
 
+//    qDebug()<<"Selector.is_accepted(): " << selector.is_accepted();
     if (selector.is_accepted() && mw->is_copy_enabled)
     {
         QClipboard *clipboard = QGuiApplication::clipboard();

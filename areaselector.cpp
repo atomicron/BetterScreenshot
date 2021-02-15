@@ -24,6 +24,7 @@ AreaSelector::AreaSelector(QWidget *parent) : QDialog(parent)
 
     setCursor(Qt::CrossCursor);
     rubber_band = nullptr;
+    accepted = false;
 }
 
 AreaSelector::AreaSelector(QPixmap pm, QWidget *parent) : QDialog(parent)
@@ -46,6 +47,7 @@ AreaSelector::AreaSelector(QPixmap pm, QWidget *parent) : QDialog(parent)
 
     setCursor(Qt::CrossCursor);
     rubber_band = nullptr;
+    accepted = false;
 }
 
 AreaSelector::~AreaSelector()
