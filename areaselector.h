@@ -21,6 +21,8 @@ class AreaSelector : public QDialog
 
     QRubberBand* rubber_band;
 
+    bool accepted;
+
 public:
     explicit AreaSelector(QWidget *parent = nullptr);
     explicit AreaSelector(QPixmap, QWidget *parent = nullptr);
@@ -32,6 +34,7 @@ public:
 
     const QRect get_area() const { return area; }
 
+    bool is_accepted() const { return accepted; }
 };
 
 #endif // AREASELECTOR_H

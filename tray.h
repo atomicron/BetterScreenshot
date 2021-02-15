@@ -19,6 +19,7 @@ class Tray : protected QSystemTrayIcon
     QAction* settings;
     QAction* snipe;
     QAction* open_save_dir;
+    QAction* full_screenshot;
 
     bool is_enable_pop_up;
 
@@ -31,7 +32,7 @@ public:
 
 public slots:
 
-    void show_context_menu(QSystemTrayIcon::ActivationReason);
+    void show_context_menu(QSystemTrayIcon::ActivationReason reason);
     void open_directory();
 
 };

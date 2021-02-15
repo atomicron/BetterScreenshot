@@ -10,7 +10,7 @@ Settings::Settings(MainWindow *parent)
 {
 }
 
-const QString ENABLE_CROP = "ENABLE_CROP";
+const QString PRINT_SCREEN_KEY = "PRINT_SCREEN_KEY";
 const QString AUTO_SAVE = "AUTO_SAVE";
 const QString CLIPBOARD = "CLIPBOARD";
 const QString TRAY_POP_UP = "TRAY_POP_UP";
@@ -25,7 +25,7 @@ void Settings::load()
     if (status() != QSettings::NoError)
         MsgBox("Error, could not load settings");
 
-    mw->set_enable_crop(value(ENABLE_CROP).toBool());
+    mw->set_print_screen_key(value(PRINT_SCREEN_KEY).toBool());
     mw->set_enable_auto_save(value(AUTO_SAVE).toBool());
     mw->set_enable_copy(value(CLIPBOARD).toBool());
     mw->set_enable_tray_pop_up(value(TRAY_POP_UP).toBool());
@@ -37,7 +37,7 @@ void Settings::load()
 
 void Settings::save()
 {
-    setValue(ENABLE_CROP, mw->is_crop_enabled);
+    setValue(PRINT_SCREEN_KEY, mw->is_print_screen_enabled);
     setValue(AUTO_SAVE, mw->is_auto_save_enabled);
     setValue(CLIPBOARD, mw->is_copy_enabled);
     setValue(TRAY_POP_UP, mw->is_tray_pop_up_enabled());

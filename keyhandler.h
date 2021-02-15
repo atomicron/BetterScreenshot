@@ -26,7 +26,7 @@ public:
     bool enable_hook();
     bool disable_hook();
 
-    void mw_do_snapshot();
+    void mw_do_print_screen();
 
 };
 

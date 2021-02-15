@@ -21,6 +21,7 @@ public:
     explicit ScreenHandler(MainWindow *parent = nullptr);
 
     void do_screenshot();
+    void do_snipe();
 
 };
 

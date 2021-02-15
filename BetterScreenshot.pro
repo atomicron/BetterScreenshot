@@ -11,6 +11,7 @@ CONFIG += c++11
 SOURCES += \
     areaselector.cpp \
     keyhandler.cpp \
+    log.cpp \
     main.cpp \
     mainwindow.cpp \
     msgbox.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
 HEADERS += \
     areaselector.h \
     keyhandler.h \
+    log.h \
     mainwindow.h \
     msgbox.h \
     screenhandler.h \

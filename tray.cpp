@@ -13,11 +13,15 @@ Tray::Tray(MainWindow *parent)
     setIcon(QIcon(":/resources/BS.png"));
     setVisible(true);
 
+    setToolTip("Click with left mouse button to snipe");
 
     settings = new QAction("Settings");
     quit = new QAction("Quit");
     snipe = new QAction("Snipe");
     open_save_dir = new QAction("Open save directory");
+    full_screenshot = new QAction("Full screenshot");
+
+    menu->addAction(full_screenshot);
     menu->addAction(snipe);
     menu->addAction(open_save_dir);
     menu->addAction(settings);
@@ -25,11 +29,12 @@ Tray::Tray(MainWindow *parent)
 
     setContextMenu(menu);
 
+    connect(full_screenshot, SIGNAL(triggered()), parent, SLOT(do_screenshot()));
     connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(show_context_menu(QSystemTrayIcon::ActivationReason)));
     connect(quit, SIGNAL(triggered()), parent, SLOT(custom_quit()));
-    connect(settings, SIGNAL(triggered()), parent, SLOT(show()));
+    connect(settings, SIGNAL(triggered()), parent, SLOT(showNormal()));
     connect(this, SIGNAL(messageClicked()), this, SLOT(open_directory()));
-    connect(snipe, SIGNAL(triggered()), mw, SLOT(do_snapshot()));
+    connect(snipe, SIGNAL(triggered()), mw, SLOT(do_snipe()));
     connect(open_save_dir, SIGNAL(triggered()), this, SLOT(open_directory()));
 }
 
@@ -53,9 +58,12 @@ void Tray::set_enable_pop_up(bool b)
    is_enable_pop_up = b;
 }
 
-void Tray::show_context_menu(ActivationReason)
+void Tray::show_context_menu(ActivationReason reason)
 {
-    menu->show();
+    if (reason == QSystemTrayIcon::Context)
+        menu->show();
+    else if(reason == QSystemTrayIcon::Trigger)
+        mw->do_snipe();
 }
 
 void Tray::open_directory()

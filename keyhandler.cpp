@@ -39,9 +39,9 @@ bool KeyHandler::disable_hook()
     return UnhookWindowsHookEx(key_hook);
 }
 
-void KeyHandler::mw_do_snapshot()
+void KeyHandler::mw_do_print_screen()
 {
-    mw->do_snapshot();
+    mw->do_print_screen();
 }
 
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
@@ -72,9 +72,17 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
         if (str->vkCode == VK_SNAPSHOT)
         {
             // do snapshot
-            KeyHandler::Instance().mw_do_snapshot();
-            return 1; // return 1 here and stop the signal
+            KeyHandler::Instance().mw_do_print_screen();
+//            qDebug()<<"Screenshot";
+            return 999; // return 1 here and stop the signal
             // returning 1 prevents other applications from receiving the signal!!
+        }
+    }
+    if (wParam == WM_KEYUP)
+    {
+        if (str->vkCode == VK_SNAPSHOT)
+        {
+            return 666;
         }
     }
 

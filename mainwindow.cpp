@@ -11,6 +11,8 @@
 
 #include <QDebug>
 
+//#include <log.h>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -28,6 +30,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     setWindowTitle("Better Screenshot");
     setWindowIcon(QIcon(":/resources/BS.png"));
+
+//    LOG<<"Test";
+//    Log::getInstance();
+
+    ui->combo_box->addItem("Full screenshot");
+    ui->combo_box->addItem("Snipe");
 }
 
 MainWindow::~MainWindow()
@@ -42,10 +50,33 @@ void MainWindow::custom_quit()
     QApplication::quit();
 }
 
-void MainWindow::do_snapshot()
+void MainWindow::do_print_screen()
 {
+   if (is_print_screen_enabled)
+   {
+       if (ui->combo_box->currentText() == "Snipe")
+           do_snipe();
+       if (ui->combo_box->currentText() == "Full screenshot")
+           do_screenshot();
+   }
+}
+
+void MainWindow::do_screenshot()
+{
+    bool current_visibility = isVisible();
+    hide();
     if (!in_shot)
         sh->do_screenshot();
+   setVisible(current_visibility);
+}
+
+void MainWindow::do_snipe()
+{
+    bool current_visibility = isVisible();
+    hide();
+    if (!in_shot)
+        sh->do_snipe();
+    setVisible(current_visibility);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -82,7 +113,7 @@ int MainWindow::get_quality()
 
 bool MainWindow::is_tray_pop_up_enabled()
 {
-   return ui->cb_enable_tray_pop_up->isChecked();
+    return ui->cb_enable_tray_pop_up->isChecked();
 }
 
 void MainWindow::set_quality(int val)
@@ -95,10 +126,11 @@ const QRect MainWindow::get_selected_area() const
     return selected_area;
 }
 
-void MainWindow::set_enable_crop(bool b)
+void MainWindow::set_print_screen_key(bool b)
 {
-    is_crop_enabled = b;
-    ui->cb_enable_crop->setChecked(b);
+    is_print_screen_enabled = b;
+    ui->cb_enable_print_screen_key->setChecked(b);
+    ui->combo_box->setEnabled(b);
 }
 
 void MainWindow::set_enable_copy(bool b)
@@ -109,8 +141,8 @@ void MainWindow::set_enable_copy(bool b)
 
 void MainWindow::set_enable_tray_pop_up(bool b)
 {
-   tray->set_enable_pop_up(b);
-   ui->cb_enable_tray_pop_up->setChecked(b);
+    tray->set_enable_pop_up(b);
+    ui->cb_enable_tray_pop_up->setChecked(b);
 }
 
 void MainWindow::set_enable_auto_save(bool b)
@@ -176,12 +208,6 @@ void MainWindow::on_quality_slider_valueChanged(int value)
     ui->lbl_qs_val->setText(QString::number(value));
 }
 
-
-void MainWindow::on_cb_enable_crop_toggled(bool checked)
-{
-    is_crop_enabled = checked;
-}
-
 void MainWindow::on_cb_enable_autosave_toggled(bool checked)
 {
     is_auto_save_enabled = checked;
@@ -194,7 +220,12 @@ void MainWindow::on_cb_enable_clipboard_toggled(bool checked)
 
 void MainWindow::on_btn_snipe_clicked()
 {
-   sh->do_screenshot();
+    do_snipe();
+}
+
+void MainWindow::on_btn_print_screen_clicked()
+{
+   do_screenshot();
 }
 
 void MainWindow::on_input_custom_path_textChanged(const QString &arg1)
@@ -212,3 +243,31 @@ void MainWindow::on_cb_enable_tray_pop_up_toggled(bool checked)
 {
     tray->set_enable_pop_up(checked);
 }
+
+void MainWindow::on_cb_enable_print_screen_key_toggled(bool checked)
+{
+    is_print_screen_enabled = checked;
+    if (checked)
+        kh->enable_hook();
+    else
+        kh->disable_hook();
+
+    ui->combo_box->setEnabled(checked);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    MsgBox(
+"What is all this?\n"
+"This is a software that helps in taking screenshots\n"
+"of your entire screen or an area of the screen.\n\n"
+
+"How to use:\n"
+"- Left click on the tray icon for a fast snipe\n"
+"- Right click the tray icon for a menu where you\n"
+"can select to snipe or take a full screenshot\n"
+"- You can make your Print Screen key on the keyboard\n"
+"do either of the two by enabling it in the settings menu"
+);
+}
+

@@ -9,7 +9,7 @@
 #include <QGuiApplication>
 #include <QPixmap>
 #include <QPainter>
-#include <QElapsedTimer>
+//#include <QElapsedTimer>
 
 const QString ScreenHandler::get_absolute_save_path()
 {
@@ -40,11 +40,64 @@ ScreenHandler::ScreenHandler(MainWindow *parent)
 }
 
 void ScreenHandler::do_screenshot()
-// fyi i know this function is too long and I hate it and it's ugly...
 {
     mw->in_shot=true;
-    QElapsedTimer timer;
-    timer.start();
+
+    QPixmap canvas(full_size);
+    canvas.fill(Qt::black);
+
+    QList<QScreen*> screens_list = QGuiApplication::screens();
+    QList<QPixmap> pml;
+
+    QPainter painter(&canvas);
+
+//    int leftmost_x=0;
+//    int topmost_y=0;
+//    for (int i=0; i<screens_list.size(); ++i)
+//    {
+//       if (leftmost_x < screens_list[i]->geometry().topLeft().x())
+//           leftmost_x = screens_list[i]->geometry().topLeft().x();
+//       if (topmost_y < screens_list[i]->geometry().topLeft().y())
+//           topmost_y = screens_list[i]->geometry().topLeft().y();
+//    }
+//    qDebug()<<"topleftmost:"<<leftmost_x << ',' << topmost_y;
+
+    int offset_x = get_offset(scr->virtualGeometry().topLeft().x());
+    int offset_y = get_offset(scr->virtualGeometry().topLeft().y());
+
+    for (int i=0; i<screens_list.size(); ++i)
+    {
+        pml.push_back(screens_list[i]->grabWindow(0));
+    painter.drawPixmap(
+                screens_list[i]->geometry().topLeft().x()+offset_x,
+                screens_list[i]->geometry().topLeft().y()+offset_y,
+                pml[i]);
+    }
+    painter.end();
+
+//    if (mw->is_crop_enabled)
+//    {
+//        AreaSelector selector(canvas);
+//        selector.move(-offset_x, -offset_y);
+////        selector.move(leftmost_x, topmost_y);
+//        selector.exec();
+//        QRect area = selector.get_area();
+//        canvas = canvas.copy(area);
+//    }
+    if (mw->is_auto_save_enabled && !canvas.save(get_absolute_save_path(), "", mw->get_quality()))
+        qDebug() << "Failed to save";
+    if (mw->is_copy_enabled)
+    {
+        QClipboard *clipboard = QGuiApplication::clipboard();
+        clipboard->setPixmap(canvas);
+        mw->tray_say("Copied to clipboard :)");
+    }
+    mw->in_shot=false;
+}
+
+void ScreenHandler::do_snipe()
+{
+    mw->in_shot=true;
 
     QPixmap canvas(full_size);
     canvas.fill(Qt::black);
@@ -60,35 +113,28 @@ void ScreenHandler::do_screenshot()
     for (int i=0; i<screens_list.size(); ++i)
     {
         pml.push_back(screens_list[i]->grabWindow(0));
-        painter.drawPixmap(screens_list[i]->geometry().topLeft().x()+offset_x,
-                   screens_list[i]->geometry().topLeft().y()+offset_y,
-                   pml[i]);
+        painter.drawPixmap(
+                    screens_list[i]->geometry().topLeft().x()+offset_x,
+                    screens_list[i]->geometry().topLeft().y()+offset_y,
+                    pml[i]);
     }
     painter.end();
-    int quality = mw->get_quality();
 
-    QRect area = mw->get_selected_area();
-    if (area.topLeft()!=area.bottomRight())
-        canvas = canvas.copy(area);
+    AreaSelector selector(canvas);
+    selector.move(-offset_x, -offset_y);
+    selector.exec();
 
-    // area selector
-    if (mw->is_crop_enabled)
-    {
-        AreaSelector selector(canvas);
-        selector.move(-offset_x, -offset_y);
-        selector.exec();
-        area = selector.get_area();
-        canvas = canvas.copy(area);
-    }
-    if (mw->is_auto_save_enabled && !canvas.save(get_absolute_save_path(), "", quality))
+    QRect area = selector.get_area();
+    canvas = canvas.copy(area);
+
+    if (selector.is_accepted() && mw->is_auto_save_enabled && !canvas.save(get_absolute_save_path(), "", mw->get_quality()))
         qDebug() << "Failed to save";
-    if (mw->is_copy_enabled)
+
+    if (selector.is_accepted() && mw->is_copy_enabled)
     {
         QClipboard *clipboard = QGuiApplication::clipboard();
         clipboard->setPixmap(canvas);
-        // ask someone to pop a tray notification
         mw->tray_say("Copied to clipboard :)");
     }
-    qDebug() << "Elapsed time: " << timer.elapsed();
     mw->in_shot=false;
 }

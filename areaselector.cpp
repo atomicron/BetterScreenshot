@@ -1,7 +1,7 @@
 #include "areaselector.h"
 #include <QCursor>
 #include <QDebug>
-#include<QGuiApplication>
+#include <QGuiApplication>
 #include <QScreen>
 #include <QPainter>
 
@@ -23,7 +23,7 @@ AreaSelector::AreaSelector(QWidget *parent) : QDialog(parent)
     move(offset_x, offset_y);
 
     setCursor(Qt::CrossCursor);
-
+    rubber_band = nullptr;
 }
 
 AreaSelector::AreaSelector(QPixmap pm, QWidget *parent) : QDialog(parent)
@@ -45,7 +45,7 @@ AreaSelector::AreaSelector(QPixmap pm, QWidget *parent) : QDialog(parent)
     this->setPalette(palette);
 
     setCursor(Qt::CrossCursor);
-
+    rubber_band = nullptr;
 }
 
 AreaSelector::~AreaSelector()
@@ -54,10 +54,18 @@ AreaSelector::~AreaSelector()
 
 void AreaSelector::mousePressEvent(QMouseEvent *event)
 {
-//    start = QCursor::pos();
     start = event->pos();
+    // this should be moved to the constructor
+    if (rubber_band) delete rubber_band;
     rubber_band = new QRubberBand(QRubberBand::Rectangle, this);
     rubber_band->show();
+    if (event->button() == Qt::RightButton)
+    {
+        if (rubber_band)
+            delete rubber_band;
+        hide();
+        accepted = false;
+    }
 }
 
 void AreaSelector::mouseMoveEvent(QMouseEvent *event)
@@ -69,14 +77,24 @@ void AreaSelector::mouseReleaseEvent(QMouseEvent *event)
 {
     rubber_band->hide();
     delete rubber_band;
-    end = event->pos();
 
-    int leftmost = min(start.x(), end.x());
-    int rightmost = max(start.x(), end.x());
-    int topmost = min(start.y(), end.y());
-    int botmost = max(start.y(), end.y());
+    if (event->button() == Qt::RightButton)
+    {
+        accepted = false;
+    }
+    else
+    {
+        accepted = true;
 
-    area = QRect(QPoint(leftmost, topmost), QPoint(rightmost, botmost));
+        end = event->pos();
+
+        int leftmost = min(start.x(), end.x());
+        int rightmost = max(start.x(), end.x());
+        int topmost = min(start.y(), end.y());
+        int botmost = max(start.y(), end.y());
+
+        area = QRect(QPoint(leftmost, topmost), QPoint(rightmost, botmost));
+    }
 
     hide();
 }

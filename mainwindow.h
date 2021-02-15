@@ -32,7 +32,7 @@ public:
     bool is_tray_pop_up_enabled();
     const QRect get_selected_area() const;
 
-    void set_enable_crop(bool b);
+    void set_print_screen_key(bool b);
     void set_enable_auto_save(bool b);
     void set_enable_copy(bool b);
     void set_enable_tray_pop_up(bool b);
@@ -43,9 +43,9 @@ public:
 
     QRect selected_area;
     QString save_path;
-    bool is_crop_enabled;
     bool is_auto_save_enabled;
     bool is_copy_enabled;
+    bool is_print_screen_enabled;
 
     bool in_shot = false;
 
@@ -53,7 +53,9 @@ public:
 
 public slots:
     void custom_quit();
-    void do_snapshot();
+    void do_print_screen();
+    void do_screenshot();
+    void do_snipe();
 
 private slots:
     void on_cb_custom_savepath_toggled(bool checked);
@@ -61,14 +63,15 @@ private slots:
     void on_btn_select_area_clicked();
     void on_btn_reset_area_clicked();
     void on_quality_slider_valueChanged(int value);
-    void on_cb_enable_crop_toggled(bool checked);
+    void on_cb_enable_print_screen_key_toggled(bool checked);
     void on_cb_enable_autosave_toggled(bool checked);
     void on_cb_enable_clipboard_toggled(bool checked);
     void on_btn_snipe_clicked();
     void on_input_custom_path_textChanged(const QString &arg1);
     void on_cb_enable_tray_pop_up_toggled(bool checked);
+    void on_btn_print_screen_clicked();
 
-
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
