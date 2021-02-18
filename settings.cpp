@@ -1,8 +1,6 @@
 #include "settings.h"
 #include "mainwindow.h"
-#include "msgbox.h"
-
-#include<QDebug>
+#include "misc/msgbox.h"
 
 Settings::Settings(MainWindow *parent)
     : QSettings(QSettings::UserScope, QString("BetterScreenshot"), QString("BetterScreenshot"), parent)

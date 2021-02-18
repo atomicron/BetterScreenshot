@@ -9,21 +9,24 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    misc/lock.cpp \
+    misc/msgbox.cpp \
     areaselector.cpp \
     keyhandler.cpp \
     main.cpp \
     mainwindow.cpp \
-    msgbox.cpp \
     screenhandler.cpp \
     settings.cpp \
     tray.cpp
 
 HEADERS += \
+    misc/lock.h \
+    misc/msgbox.h \
+    misc/os.h \
+    misc/log.h \
     areaselector.h \
     keyhandler.h \
     mainwindow.h \
-    msgbox.h \
-    os.h \
     screenhandler.h \
     settings.h \
     tray.h
@@ -41,5 +44,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     resource_file.qrc
 
-win32:RC_ICONS += BS_256x256.ico
+win32:RC_ICONS += icon/BS_256x256.ico
 

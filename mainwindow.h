@@ -3,13 +3,14 @@
 
 #include <QMainWindow>
 
-// User defined classes
 #include "tray.h"
 #include "keyhandler.h"
 #include "settings.h"
 #include "screenhandler.h"
+#include "misc/lock.h"
 
 #include <QMouseEvent>
+#include <QCoreApplication>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -51,6 +52,8 @@ public:
 
     void tray_say(QString);
 
+    void bail();
+
 public slots:
     void custom_quit();
     void do_print_screen();
@@ -74,6 +77,7 @@ private slots:
     void on_pushButton_clicked();
 
 private:
+    Lock* lock;
     Ui::MainWindow *ui;
     Tray* tray;
     KeyHandler* kh;

@@ -16,18 +16,15 @@ AreaSelector::AreaSelector(QWidget *parent) : QDialog(parent)
     setWindowOpacity(0.2);
 
     QScreen* scr  = QGuiApplication::primaryScreen();
-    setFixedSize(scr->virtualSize());
-
-    offset_x = scr->virtualGeometry().topLeft().x();
-    offset_y = scr->virtualGeometry().topLeft().y();
-    move(offset_x, offset_y);
+    setGeometry(scr->virtualGeometry().topLeft().x(), scr->virtualGeometry().topLeft().y(),
+                scr->virtualSize().width(), scr->virtualSize().height());
 
     setCursor(Qt::CrossCursor);
     rubber_band = nullptr;
     accepted = false;
 }
 
-AreaSelector::AreaSelector(QPoint pos, QPixmap pm, QWidget *parent) : QDialog(parent)
+AreaSelector::AreaSelector(QPixmap pm, QWidget *parent) : QDialog(parent)
 {
     installEventFilter(this);
     setWindowFlags(windowFlags() | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
@@ -43,7 +40,7 @@ AreaSelector::AreaSelector(QPoint pos, QPixmap pm, QWidget *parent) : QDialog(pa
     QPalette palette;
     palette.setBrush(QPalette::Background, pm);
 
-    this->setPalette(palette);
+    setPalette(palette);
 
     setCursor(Qt::CrossCursor);
     rubber_band = nullptr;

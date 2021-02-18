@@ -1,8 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "msgbox.h"
-
+#include "misc/msgbox.h"
 #include "areaselector.h"
 
 #include <QCloseEvent>
@@ -11,13 +10,14 @@
 
 #include <QDebug>
 
-#include "log.h"
+#include "misc/log.h"
+Log *Log::instance = 0;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
+    , lock(new Lock("BetterScreenshotLock"))
     , ui(new Ui::MainWindow)
     , tray(new Tray(this))
-    //    , kh(new KeyHandler(this))
     , kh(&KeyHandler().Instance(this))
     , settings(new Settings(this))
     , sh(new ScreenHandler(this))
@@ -29,7 +29,12 @@ MainWindow::MainWindow(QWidget *parent)
     hide();
 
     setWindowTitle("Better Screenshot");
-    setWindowIcon(QIcon(":/resources/BS.png"));
+    setWindowIcon(QIcon(":/resources/icon/BS.png"));
+
+    (log).truncate();
+    (log).setEnable(true);
+    log << "test me 123\r\n";
+
 
     ui->combo_box->addItem("Full screenshot");
     ui->combo_box->addItem("Snipe");
@@ -45,6 +50,12 @@ void MainWindow::custom_quit()
 {
     settings->save();
     QApplication::quit();
+}
+
+void MainWindow::bail()
+{
+    qDebug()<<"In bail";
+    QApplication::exit(6);
 }
 
 void MainWindow::do_print_screen()
@@ -189,8 +200,8 @@ void MainWindow::on_btn_select_area_clicked()
 {
     AreaSelector select;
     select.exec();
-    selected_area = select.get_area();
-    set_selected_area(selected_area);
+//    selected_area = select.get_area();
+    set_selected_area(select.get_area());
 }
 
 void MainWindow::on_btn_reset_area_clicked()

@@ -1,6 +1,7 @@
 #include "screenhandler.h"
 #include "mainwindow.h"
 #include "settings.h"
+#include "misc/msgbox.h"
 
 #include "areaselector.h"
 #include <QClipboard>
@@ -37,8 +38,6 @@ ScreenHandler::ScreenHandler(MainWindow *parent)
 {
     scr = QGuiApplication::primaryScreen();
     full_size = scr->virtualSize();
-    int w = scr->virtualSize().width();
-    int h = scr->virtualSize().height();
 }
 
 void ScreenHandler::do_screenshot()
@@ -122,18 +121,18 @@ void ScreenHandler::do_snipe()
     }
     painter.end();
 
-    AreaSelector selector(scr->availableGeometry().topLeft(), canvas);
+    AreaSelector selector(canvas);
     selector.setGeometry(scr->virtualGeometry().topLeft().x(), scr->virtualGeometry().topLeft().y(),
-                        full_size.width(), full_size.height()
-                         );
-       selector.exec();
+                        full_size.width(), full_size.height());
+    selector.exec();
+
     QRect area = selector.get_area();
     canvas = canvas.copy(area);
 
     if (selector.is_accepted() && mw->is_auto_save_enabled && !canvas.save(get_absolute_save_path(), "", mw->get_quality()))
-        qDebug() << "Failed to save";
+        MsgBox("Failed to save\n"
+               "Check save directory settings");
 
-//    qDebug()<<"Selector.is_accepted(): " << selector.is_accepted();
     if (selector.is_accepted() && mw->is_copy_enabled)
     {
         QClipboard *clipboard = QGuiApplication::clipboard();

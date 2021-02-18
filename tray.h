@@ -7,19 +7,20 @@
 
 class MainWindow;
 
-class Tray : protected QSystemTrayIcon
+class Tray : public QSystemTrayIcon
 {
     Q_OBJECT
 
     MainWindow* mw;
 
     QMenu* menu;
-
-    QAction* quit;
-    QAction* settings;
+    QAction* full_screenshot;
     QAction* snipe;
     QAction* open_save_dir;
-    QAction* full_screenshot;
+    QAction* settings;
+    QAction* quit;
+    void add_clickies();
+    void connect_clickies();
 
     bool is_enable_pop_up;
 
@@ -31,7 +32,6 @@ public:
     void set_enable_pop_up(bool);
 
 public slots:
-
     void show_context_menu(QSystemTrayIcon::ActivationReason reason);
     void open_directory();
 

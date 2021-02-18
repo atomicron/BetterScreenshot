@@ -25,7 +25,7 @@ class AreaSelector : public QDialog
 
 public:
     explicit AreaSelector(QWidget *parent = nullptr);
-    explicit AreaSelector(QPoint, QPixmap, QWidget *parent = nullptr);
+    explicit AreaSelector(QPixmap, QWidget *parent = nullptr);
     ~AreaSelector();
 
     void mousePressEvent(QMouseEvent *event);

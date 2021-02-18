@@ -2,7 +2,7 @@
 #include "keyhandler.h"
 #include "mainwindow.h"
 
-#include "os.h"
+#include "misc/os.h"
 
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
