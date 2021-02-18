@@ -27,7 +27,7 @@ AreaSelector::AreaSelector(QWidget *parent) : QDialog(parent)
     accepted = false;
 }
 
-AreaSelector::AreaSelector(QPixmap pm, QWidget *parent) : QDialog(parent)
+AreaSelector::AreaSelector(QPoint pos, QPixmap pm, QWidget *parent) : QDialog(parent)
 {
     installEventFilter(this);
     setWindowFlags(windowFlags() | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
@@ -61,13 +61,14 @@ void AreaSelector::mousePressEvent(QMouseEvent *event)
     if (rubber_band) delete rubber_band;
     rubber_band = new QRubberBand(QRubberBand::Rectangle, this);
     rubber_band->show();
-    if (event->button() == Qt::RightButton)
-    {
-        if (rubber_band)
-            delete rubber_band;
-        hide();
-        accepted = false;
-    }
+//    if (event->button() == Qt::RightButton)
+//    {
+//        if (rubber_band)
+//            delete rubber_band;
+//        hide();
+//        accepted = false;
+//        event->ignore();
+//    }
 }
 
 void AreaSelector::mouseMoveEvent(QMouseEvent *event)

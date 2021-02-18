@@ -11,13 +11,13 @@
 
 #include <QDebug>
 
-//#include <log.h>
+#include "log.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , tray(new Tray(this))
-//    , kh(new KeyHandler(this))
+    //    , kh(new KeyHandler(this))
     , kh(&KeyHandler().Instance(this))
     , settings(new Settings(this))
     , sh(new ScreenHandler(this))
@@ -30,9 +30,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     setWindowTitle("Better Screenshot");
     setWindowIcon(QIcon(":/resources/BS.png"));
-
-//    LOG<<"Test";
-//    Log::getInstance();
 
     ui->combo_box->addItem("Full screenshot");
     ui->combo_box->addItem("Snipe");
@@ -52,13 +49,13 @@ void MainWindow::custom_quit()
 
 void MainWindow::do_print_screen()
 {
-   if (is_print_screen_enabled)
-   {
-       if (ui->combo_box->currentText() == "Snipe")
-           do_snipe();
-       if (ui->combo_box->currentText() == "Full screenshot")
-           do_screenshot();
-   }
+    if (is_print_screen_enabled)
+    {
+        if (ui->combo_box->currentText() == "Snipe")
+            do_snipe();
+        if (ui->combo_box->currentText() == "Full screenshot")
+            do_screenshot();
+    }
 }
 
 void MainWindow::do_screenshot()
@@ -67,7 +64,7 @@ void MainWindow::do_screenshot()
     hide();
     if (!in_shot)
         sh->do_screenshot();
-   setVisible(current_visibility);
+    setVisible(current_visibility);
 }
 
 void MainWindow::do_snipe()
@@ -225,7 +222,7 @@ void MainWindow::on_btn_snipe_clicked()
 
 void MainWindow::on_btn_print_screen_clicked()
 {
-   do_screenshot();
+    do_screenshot();
 }
 
 void MainWindow::on_input_custom_path_textChanged(const QString &arg1)
@@ -258,7 +255,7 @@ void MainWindow::on_cb_enable_print_screen_key_toggled(bool checked)
 void MainWindow::on_pushButton_clicked()
 {
     MsgBox(
-"What is all this?\n"
+                "What is all this?\n"
 "This is a software that helps in taking screenshots\n"
 "of your entire screen or an area of the screen.\n\n"
 

@@ -37,6 +37,8 @@ ScreenHandler::ScreenHandler(MainWindow *parent)
 {
     scr = QGuiApplication::primaryScreen();
     full_size = scr->virtualSize();
+    int w = scr->virtualSize().width();
+    int h = scr->virtualSize().height();
 }
 
 void ScreenHandler::do_screenshot()
@@ -120,10 +122,11 @@ void ScreenHandler::do_snipe()
     }
     painter.end();
 
-    AreaSelector selector(canvas);
-    selector.move(-offset_x, -offset_y);
-    selector.exec();
-
+    AreaSelector selector(scr->availableGeometry().topLeft(), canvas);
+    selector.setGeometry(scr->virtualGeometry().topLeft().x(), scr->virtualGeometry().topLeft().y(),
+                        full_size.width(), full_size.height()
+                         );
+       selector.exec();
     QRect area = selector.get_area();
     canvas = canvas.copy(area);
 

@@ -2,6 +2,8 @@
 #include "keyhandler.h"
 #include "mainwindow.h"
 
+#include "os.h"
+
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 
@@ -13,6 +15,7 @@ KeyHandler& KeyHandler::Instance(MainWindow *parent)
     return thisInstance;
 }
 
+#ifdef WINDOWS_OS
 bool KeyHandler::enable_hook()
 // https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setwindowshookexa
 // return true of hook was successfully injected
@@ -38,6 +41,17 @@ bool KeyHandler::disable_hook()
 {
     return UnhookWindowsHookEx(key_hook);
 }
+#endif
+
+#ifdef LINUX_OS
+bool KeyHandler::enable_hook()
+{
+}
+
+bool KeyHandler::disable_hook()
+{
+}
+#endif
 
 void KeyHandler::mw_do_print_screen()
 {
