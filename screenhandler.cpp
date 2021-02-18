@@ -76,15 +76,16 @@ void ScreenHandler::do_screenshot()
     }
     painter.end();
 
-//    if (mw->is_crop_enabled)
+//    if (mw->is_area_selected)
 //    {
 //        AreaSelector selector(canvas);
-//        selector.move(-offset_x, -offset_y);
+//        selector.move(offset_x, offset_y);
 ////        selector.move(leftmost_x, topmost_y);
 //        selector.exec();
 //        QRect area = selector.get_area();
 //        canvas = canvas.copy(area);
 //    }
+
     if (mw->is_auto_save_enabled && !canvas.save(get_absolute_save_path(), "", mw->get_quality()))
         qDebug() << "Failed to save";
     if (mw->is_copy_enabled)

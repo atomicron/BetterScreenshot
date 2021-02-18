@@ -33,6 +33,10 @@ AreaSelector::AreaSelector(QPixmap pm, QWidget *parent) : QDialog(parent)
 
     setFixedSize(pm.size());
 
+//    QScreen* scr  = QGuiApplication::primaryScreen();
+//    setGeometry(scr->virtualGeometry().topLeft().x(), scr->virtualGeometry().topLeft().y(),
+//                scr->virtualSize().width(), scr->virtualSize().height());
+
     QPainter painter(&pm);
     painter.setOpacity(0.33);
     painter.fillRect(QRect(0, 0, pm.size().width(), pm.size().height()), QColor("gray"));

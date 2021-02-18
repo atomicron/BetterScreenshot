@@ -46,47 +46,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::custom_quit()
-{
-    settings->save();
-    QApplication::quit();
-}
-
-void MainWindow::bail()
-{
-    qDebug()<<"In bail";
-    QApplication::exit(6);
-}
-
-void MainWindow::do_print_screen()
-{
-    if (is_print_screen_enabled)
-    {
-        if (ui->combo_box->currentText() == "Snipe")
-            do_snipe();
-        if (ui->combo_box->currentText() == "Full screenshot")
-            do_screenshot();
-    }
-}
-
-void MainWindow::do_screenshot()
-{
-    bool current_visibility = isVisible();
-    hide();
-    if (!in_shot)
-        sh->do_screenshot();
-    setVisible(current_visibility);
-}
-
-void MainWindow::do_snipe()
-{
-    bool current_visibility = isVisible();
-    hide();
-    if (!in_shot)
-        sh->do_snipe();
-    setVisible(current_visibility);
-}
-
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     hide();
@@ -102,6 +61,13 @@ void MainWindow::set_save_path(QString path)
 {
     save_path = path;
     ui->input_custom_path->setText(path);
+}
+
+void MainWindow::set_selected_area(QRect a)
+{
+    ui->lbl_start_point->setText("Start point: " + QString::number(a.topLeft().x()) +','+ QString::number(a.topLeft().y()));
+    ui->lbl_end_point->setText("End point: " + QString::number(a.bottomRight().x()) +','+ QString::number(a.bottomRight().y()));
+    selected_area = a;
 }
 
 bool MainWindow::is_custom_save()
@@ -159,22 +125,103 @@ void MainWindow::set_enable_auto_save(bool b)
     ui->cb_enable_autosave->setChecked(b);
 }
 
-void MainWindow::set_selected_area(QRect rect)
-{
-    ui->lbl_start_point->setText("Start point: " + QString::number(rect.topLeft().x()) +','+ QString::number(rect.topLeft().y()));
-    ui->lbl_end_point->setText("End point: " + QString::number(rect.bottomRight().x()) +','+ QString::number(rect.bottomRight().y()));
-    if (rect.size()==QSize(0,0))
-    {
-        ui->lbl_end_point->clear();
-        ui->lbl_start_point->clear();
-    }
-    else
-        selected_area = rect;
-}
-
 void MainWindow::tray_say(QString arg)
 {
     tray->show_msg(arg);
+}
+
+
+
+// ----- public slots ----- //
+void MainWindow::custom_quit()
+{
+    settings->save();
+    QApplication::quit();
+}
+
+void MainWindow::do_print_screen()
+// To help handle the PrintScreen key selection
+{
+    if (is_print_screen_enabled)
+    {
+        if (ui->combo_box->currentText() == "Snipe")
+            do_snipe();
+        if (ui->combo_box->currentText() == "Full screenshot")
+            do_screenshot();
+    }
+}
+
+void MainWindow::do_screenshot()
+{
+    bool current_visibility = isVisible();
+    hide();
+    if (!in_shot)
+        sh->do_screenshot();
+    setVisible(current_visibility);
+}
+
+void MainWindow::do_snipe()
+{
+    bool current_visibility = isVisible();
+    hide();
+    if (!in_shot)
+        sh->do_snipe();
+    setVisible(current_visibility);
+}
+// ----- end public slots ----- //
+
+
+
+// ----- private slots ----- //
+// Help button
+void MainWindow::on_btn_help_clicked()
+{
+    MsgBox(
+                "What is all this?\n"
+"This is a software that helps in taking screenshots\n"
+"of your entire screen or an area of the screen.\n\n"
+
+"How to use:\n"
+"- Left click on the tray icon for a fast snipe\n"
+"- Right click the tray icon for a menu where you\n"
+"can select to snipe or take a full screenshot\n"
+"- You can make your Print Screen key on the keyboard\n"
+"do either of the two by enabling it in the settings menu"
+);
+}
+
+// First group - misc settings
+void MainWindow::on_cb_enable_clipboard_toggled(bool checked)
+{
+    is_copy_enabled = checked;
+}
+
+void MainWindow::on_cb_enable_tray_pop_up_toggled(bool checked)
+{
+    tray->set_enable_pop_up(checked);
+}
+
+void MainWindow::on_cb_enable_print_screen_key_toggled(bool checked)
+{
+    is_print_screen_enabled = checked;
+    if (checked)
+        kh->enable_hook();
+    else
+        kh->disable_hook();
+
+    ui->combo_box->setEnabled(checked);
+}
+
+// Second group - quality slider
+void MainWindow::on_quality_slider_valueChanged(int value)
+{
+    ui->lbl_qs_val->setText(QString::number(value));
+}
+
+// Third group - save settings
+void MainWindow::on_cb_enable_autosave_toggled(bool checked)
+{
+    is_auto_save_enabled = checked;
 }
 
 void MainWindow::on_cb_custom_savepath_toggled(bool checked)
@@ -196,46 +243,6 @@ void MainWindow::on_btn_browse_dir_clicked()
     ui->input_custom_path->setText(fdlg.directory().path());
 }
 
-void MainWindow::on_btn_select_area_clicked()
-{
-    AreaSelector select;
-    select.exec();
-//    selected_area = select.get_area();
-    set_selected_area(select.get_area());
-}
-
-void MainWindow::on_btn_reset_area_clicked()
-{
-    selected_area = QRect(0,0,0,0);
-    ui->lbl_start_point->clear();
-    ui->lbl_end_point->clear();
-}
-
-void MainWindow::on_quality_slider_valueChanged(int value)
-{
-    ui->lbl_qs_val->setText(QString::number(value));
-}
-
-void MainWindow::on_cb_enable_autosave_toggled(bool checked)
-{
-    is_auto_save_enabled = checked;
-}
-
-void MainWindow::on_cb_enable_clipboard_toggled(bool checked)
-{
-    is_copy_enabled = checked;
-}
-
-void MainWindow::on_btn_snipe_clicked()
-{
-    do_snipe();
-}
-
-void MainWindow::on_btn_print_screen_clicked()
-{
-    do_screenshot();
-}
-
 void MainWindow::on_input_custom_path_textChanged(const QString &arg1)
 {
     set_save_path(arg1);
@@ -247,35 +254,30 @@ void MainWindow::on_input_custom_path_textChanged(const QString &arg1)
         ui->input_custom_path->setStyleSheet("QLineEdit {background-color: white;}");
 }
 
-void MainWindow::on_cb_enable_tray_pop_up_toggled(bool checked)
+// The random buttons
+void MainWindow::on_btn_snipe_clicked()
 {
-    tray->set_enable_pop_up(checked);
+    do_snipe();
 }
 
-void MainWindow::on_cb_enable_print_screen_key_toggled(bool checked)
+void MainWindow::on_btn_print_screen_clicked()
 {
-    is_print_screen_enabled = checked;
-    if (checked)
-        kh->enable_hook();
-    else
-        kh->disable_hook();
-
-    ui->combo_box->setEnabled(checked);
+    do_screenshot();
 }
 
-void MainWindow::on_pushButton_clicked()
+// Select custom area
+void MainWindow::on_btn_select_area_clicked()
 {
-    MsgBox(
-                "What is all this?\n"
-"This is a software that helps in taking screenshots\n"
-"of your entire screen or an area of the screen.\n\n"
-
-"How to use:\n"
-"- Left click on the tray icon for a fast snipe\n"
-"- Right click the tray icon for a menu where you\n"
-"can select to snipe or take a full screenshot\n"
-"- You can make your Print Screen key on the keyboard\n"
-"do either of the two by enabling it in the settings menu"
-);
+    AreaSelector select;
+    select.exec();
+    set_selected_area(select.get_area());
+    is_area_selected = true;
 }
 
+void MainWindow::on_btn_reset_area_clicked()
+{
+    ui->lbl_start_point->clear();
+    ui->lbl_end_point->clear();
+    is_area_selected = false;
+}
+// ----- end private slots ----- //

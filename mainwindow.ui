@@ -125,8 +125,8 @@ snipe to your clipboard</string>
       <rect>
        <x>20</x>
        <y>20</y>
-       <width>233</width>
-       <height>76</height>
+       <width>240</width>
+       <height>78</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -295,7 +295,7 @@ compression</string>
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -404,7 +404,7 @@ Screen</string>
      <string>Tip: Click on the tray icon for a fast snipe!</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="btn_help">
     <property name="geometry">
      <rect>
       <x>240</x>

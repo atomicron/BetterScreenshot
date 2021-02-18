@@ -19,9 +19,7 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
     void closeEvent(QCloseEvent*);
-
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -47,12 +45,11 @@ public:
     bool is_auto_save_enabled;
     bool is_copy_enabled;
     bool is_print_screen_enabled;
+    bool is_area_selected = false;
 
     bool in_shot = false;
 
     void tray_say(QString);
-
-    void bail();
 
 public slots:
     void custom_quit();
@@ -61,20 +58,30 @@ public slots:
     void do_snipe();
 
 private slots:
+    // Help button
+    void on_btn_help_clicked();
+
+    // First group - misc settings
+    void on_cb_enable_clipboard_toggled(bool checked);
+    void on_cb_enable_tray_pop_up_toggled(bool checked);
+    void on_cb_enable_print_screen_key_toggled(bool checked);
+
+    // Second group - quality slider
+    void on_quality_slider_valueChanged(int value);
+
+    // Third group - save settings
+    void on_cb_enable_autosave_toggled(bool checked);
     void on_cb_custom_savepath_toggled(bool checked);
     void on_btn_browse_dir_clicked();
-    void on_btn_select_area_clicked();
-    void on_btn_reset_area_clicked();
-    void on_quality_slider_valueChanged(int value);
-    void on_cb_enable_print_screen_key_toggled(bool checked);
-    void on_cb_enable_autosave_toggled(bool checked);
-    void on_cb_enable_clipboard_toggled(bool checked);
-    void on_btn_snipe_clicked();
     void on_input_custom_path_textChanged(const QString &arg1);
-    void on_cb_enable_tray_pop_up_toggled(bool checked);
+
+    // Some random buttons
+    void on_btn_snipe_clicked();
     void on_btn_print_screen_clicked();
 
-    void on_pushButton_clicked();
+    // Select custom area
+    void on_btn_select_area_clicked();
+    void on_btn_reset_area_clicked();
 
 private:
     Lock* lock;
