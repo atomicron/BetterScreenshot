@@ -3,6 +3,7 @@
 
 #include <QFile>
 #include <QTextStream>
+#include <QDir>
 
 #include "msgbox.h"
 
@@ -24,7 +25,7 @@ class Log
     }
 
     void createLogfile() {
-        logfile = new QFile("better_screenshot.log");
+        logfile = new QFile(QDir::homePath()+"/better_screenshot.log");
         if (!logfile->open(QIODevice::WriteOnly | QIODevice::Append))
             MsgBox("Cannot open log file for writing");
     }

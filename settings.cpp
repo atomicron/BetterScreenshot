@@ -9,6 +9,7 @@ Settings::Settings(MainWindow *parent)
 }
 
 const QString PRINT_SCREEN_KEY = "PRINT_SCREEN_KEY";
+const QString PSK_FUNCTION = "PSK_FUNCTION";
 const QString AUTO_SAVE = "AUTO_SAVE";
 const QString CLIPBOARD = "CLIPBOARD";
 const QString TRAY_POP_UP = "TRAY_POP_UP";
@@ -24,6 +25,7 @@ void Settings::load()
         MsgBox("Error, could not load settings");
 
     mw->set_print_screen_key(value(PRINT_SCREEN_KEY).toBool());
+    mw->set_psk_function(value(PSK_FUNCTION).toInt());
     mw->set_enable_auto_save(value(AUTO_SAVE).toBool());
     mw->set_enable_copy(value(CLIPBOARD).toBool());
     mw->set_enable_tray_pop_up(value(TRAY_POP_UP).toBool());
@@ -36,6 +38,7 @@ void Settings::load()
 void Settings::save()
 {
     setValue(PRINT_SCREEN_KEY, mw->is_print_screen_enabled);
+    setValue(PSK_FUNCTION, mw->get_psk_function());
     setValue(AUTO_SAVE, mw->is_auto_save_enabled);
     setValue(CLIPBOARD, mw->is_copy_enabled);
     setValue(TRAY_POP_UP, mw->is_tray_pop_up_enabled());

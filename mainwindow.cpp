@@ -15,7 +15,7 @@ Log *Log::instance = 0;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , lock(new Lock("BetterScreenshotLock"))
+    , lock(new Lock(QDir::homePath()+"/.BetterScreenshotLock"))
     , ui(new Ui::MainWindow)
     , tray(new Tray(this))
     , kh(&KeyHandler().Instance(this))
@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     kh->enable_hook();
-    settings->load();
     on_btn_reset_area_clicked();
     hide();
 
@@ -38,6 +37,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->combo_box->addItem("Full screenshot");
     ui->combo_box->addItem("Snipe");
+
+    settings->load();
 }
 
 MainWindow::~MainWindow()
@@ -75,6 +76,11 @@ bool MainWindow::is_custom_save()
     return ui->cb_custom_savepath->isChecked();
 }
 
+int MainWindow::get_psk_function()
+{
+    return ui->combo_box->currentIndex();
+}
+
 void MainWindow::set_enable_custom_save(bool b)
 {
     ui->cb_custom_savepath->setChecked(b);
@@ -105,6 +111,11 @@ void MainWindow::set_print_screen_key(bool b)
     is_print_screen_enabled = b;
     ui->cb_enable_print_screen_key->setChecked(b);
     ui->combo_box->setEnabled(b);
+}
+
+void MainWindow::set_psk_function(int selection)
+{
+    ui->combo_box->setCurrentIndex(selection);
 }
 
 void MainWindow::set_enable_copy(bool b)

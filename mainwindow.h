@@ -27,11 +27,13 @@ public:
 
     QString get_save_path();
     bool is_custom_save();
+    int get_psk_function();
     int get_quality();
     bool is_tray_pop_up_enabled();
     const QRect get_selected_area() const;
 
     void set_print_screen_key(bool b);
+    void set_psk_function(int);
     void set_enable_auto_save(bool b);
     void set_enable_copy(bool b);
     void set_enable_tray_pop_up(bool b);
