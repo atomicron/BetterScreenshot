@@ -70,6 +70,9 @@ DrawDialog::DrawDialog(QPixmap pixmap, QWidget *parent)
     toolbar->addAction(action_pen);
     toolbar->addAction(action_rectangle);
     toolbar->addAction(action_circle);
+    QLabel *label = new QLabel(this);
+    label->setText("Width:");
+    toolbar->addWidget(label);
     width_input = new QLineEdit(this);
     width_input->setFixedSize(20, 20);
     toolbar->addWidget(width_input);

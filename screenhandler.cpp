@@ -135,7 +135,7 @@ void ScreenHandler::do_snipe()
         MsgBox("Failed to save\n"
                "Check save directory settings");
 
-    if (mw->is_draw_enabled)
+    if (selector.is_accepted() && mw->is_draw_enabled)
     // if draw mode is enabled open a drawing dialog with the canvas as a main image
     {
        DrawDialog draw_dialog(canvas);

@@ -17,6 +17,7 @@ DrawLabel::DrawLabel(QPixmap pm, QWidget *parent)
     gl->setMargin(0);
     setLayout(gl);
 
+    setCursor(Qt::CrossCursor);
 }
 
 DrawLabel::Tool DrawLabel::current_tool = DrawLabel::Tool::Pen;
