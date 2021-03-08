@@ -2,6 +2,10 @@
     <qresource prefix="/resources">
         <file>icon/BS.png</file>
         <file>icon/BS_256x256.ico</file>
+        <file>icon/circle.png</file>
+        <file>icon/pen.png</file>
+        <file>icon/rectangle.png</file>
+        <file>icon/palette.png</file>
     </qresource>
     <qresource prefix="/">
         <file>Deisgner.qml</file>

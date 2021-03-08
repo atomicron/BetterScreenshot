@@ -12,6 +12,9 @@
 
 #include <QMouseEvent>
 #include <QPainter>
+#include <QLabel>
+#include <QLineEdit>
+#include <QColorDialog>
 
 #include "drawlabel.h"
 
@@ -22,20 +25,16 @@ class DrawDialog : public QDialog
     QPixmap *pm;
 
     QGridLayout *gl;
-//    QLabel *label;
+    QGridLayout *inner_gl;
+    QWidget *inner_widget;
+    DrawLabel *image_label;
     QScrollArea* scroll_area;
     QToolBar* toolbar;
+    QLineEdit *width_input;
 
     QAction* action_pen;
-    DrawLabel* label;
-
-//    QPainter* painter;
-//    QPen pen;
-//    QPoint prev;
-//    QPoint xy;
-//    bool is_painting = false;
-
-//    QPixmap *tmp_pix;
+    QAction* action_rectangle;
+    QAction* action_circle;
 
 public:
     explicit DrawDialog(QPixmap pixmap, QWidget *parent = nullptr);
@@ -44,6 +43,10 @@ public:
 
 private slots:
     void pen_clicked();
+    void rectangle_clicked();
+    void circle_clicked();
+    void width_input_changed();
+    void pick_color();
 
 };
 

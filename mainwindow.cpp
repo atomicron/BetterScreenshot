@@ -4,6 +4,8 @@
 #include "misc/msgbox.h"
 #include "areaselector.h"
 
+#include "drawlabel.h"
+
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileDialog>
@@ -30,10 +32,13 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("Better Screenshot");
     setWindowIcon(QIcon(":/resources/icon/BS.png"));
 
-    (log).truncate();
-    (log).setEnable(true);
-    log << "test me 123\r\n";
+//    (log).truncate();
+//    (log).setEnable(true);
+//    log << "test me 123\r\n";
 
+
+    if (!QDir(settings->default_save_path).exists())
+        QDir().mkdir(settings->default_save_path);
 
     ui->combo_box->addItem("Full screenshot");
     ui->combo_box->addItem("Snipe");
