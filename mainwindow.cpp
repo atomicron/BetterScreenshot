@@ -118,6 +118,12 @@ void MainWindow::set_psk_function(int selection)
     ui->combo_box->setCurrentIndex(selection);
 }
 
+void MainWindow::set_enable_draw(bool b)
+{
+   is_draw_enabled = b;
+   ui->cb_enable_draw->setChecked(b);
+}
+
 void MainWindow::set_enable_copy(bool b)
 {
     is_copy_enabled = b;
@@ -223,6 +229,11 @@ void MainWindow::on_cb_enable_print_screen_key_toggled(bool checked)
     ui->combo_box->setEnabled(checked);
 }
 
+void MainWindow::on_cb_enable_draw_toggled(bool checked)
+{
+    is_draw_enabled = checked;
+}
+
 // Second group - quality slider
 void MainWindow::on_quality_slider_valueChanged(int value)
 {
@@ -292,3 +303,5 @@ void MainWindow::on_btn_reset_area_clicked()
     is_area_selected = false;
 }
 // ----- end private slots ----- //
+
+

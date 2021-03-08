@@ -34,6 +34,7 @@ public:
 
     void set_print_screen_key(bool b);
     void set_psk_function(int);
+    void set_enable_draw(bool b);
     void set_enable_auto_save(bool b);
     void set_enable_copy(bool b);
     void set_enable_tray_pop_up(bool b);
@@ -45,6 +46,7 @@ public:
     QRect selected_area;
     QString save_path;
     bool is_auto_save_enabled;
+    bool is_draw_enabled;
     bool is_copy_enabled;
     bool is_print_screen_enabled;
     bool is_area_selected = false;
@@ -67,6 +69,7 @@ private slots:
     void on_cb_enable_clipboard_toggled(bool checked);
     void on_cb_enable_tray_pop_up_toggled(bool checked);
     void on_cb_enable_print_screen_key_toggled(bool checked);
+    void on_cb_enable_draw_toggled(bool checked); // Draw on/off
 
     // Second group - quality slider
     void on_quality_slider_valueChanged(int value);
@@ -84,6 +87,7 @@ private slots:
     // Select custom area
     void on_btn_select_area_clicked();
     void on_btn_reset_area_clicked();
+
 
 private:
     Lock* lock;

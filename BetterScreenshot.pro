@@ -9,6 +9,8 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    drawdialog.cpp \
+    drawlabel.cpp \
     misc/lock.cpp \
     misc/msgbox.cpp \
     areaselector.cpp \
@@ -20,6 +22,8 @@ SOURCES += \
     tray.cpp
 
 HEADERS += \
+    drawdialog.h \
+    drawlabel.h \
     misc/lock.h \
     misc/msgbox.h \
     misc/os.h \

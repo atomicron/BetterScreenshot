@@ -12,16 +12,38 @@
 #include <QPainter>
 //#include <QElapsedTimer>
 
+#include "drawdialog.h"
+
+#include <cmath>
+
+QString get_random_suffix()
+{
+    QString str;
+    for (int i=0;i<3;++i)
+    {
+        int rand1 = (rand() % ('Z'-'A')) + 'A';
+        int rand2 = (rand() % ('z'-'a')) + 'a';
+        int rand3 = (rand() % ('9' - '0')) + '0';
+        str += char(rand1);
+        str += char(rand2);
+        str += char(rand3);
+    }
+    return str;
+}
+
 const QString ScreenHandler::get_absolute_save_path()
 {
     QString save_path = mw->get_save_path();
     QString count_string = QString::number(QDir(save_path).count());
     QString prefix = "screenshot";
     QString format = ".png";
+    QString name = prefix + "_" + count_string;
+    QString absolute_path = save_path + "/" + name + format;
 
-    QString name = prefix + "_" + count_string + format;
-
-    QString absolute_path = save_path + "/" + name;
+    while (QFile::exists(absolute_path)) {
+        QString random_suffix = get_random_suffix();
+        absolute_path = save_path + "/" + name + "_" + random_suffix + format;
+    }
     return absolute_path;
 }
 
@@ -52,17 +74,6 @@ void ScreenHandler::do_screenshot()
 
     QPainter painter(&canvas);
 
-//    int leftmost_x=0;
-//    int topmost_y=0;
-//    for (int i=0; i<screens_list.size(); ++i)
-//    {
-//       if (leftmost_x < screens_list[i]->geometry().topLeft().x())
-//           leftmost_x = screens_list[i]->geometry().topLeft().x();
-//       if (topmost_y < screens_list[i]->geometry().topLeft().y())
-//           topmost_y = screens_list[i]->geometry().topLeft().y();
-//    }
-//    qDebug()<<"topleftmost:"<<leftmost_x << ',' << topmost_y;
-
     int offset_x = get_offset(scr->virtualGeometry().topLeft().x());
     int offset_y = get_offset(scr->virtualGeometry().topLeft().y());
 
@@ -75,16 +86,6 @@ void ScreenHandler::do_screenshot()
                 pml[i]);
     }
     painter.end();
-
-//    if (mw->is_area_selected)
-//    {
-//        AreaSelector selector(canvas);
-//        selector.move(offset_x, offset_y);
-////        selector.move(leftmost_x, topmost_y);
-//        selector.exec();
-//        QRect area = selector.get_area();
-//        canvas = canvas.copy(area);
-//    }
 
     if (mw->is_auto_save_enabled && !canvas.save(get_absolute_save_path(), "", mw->get_quality()))
         qDebug() << "Failed to save";
@@ -134,11 +135,20 @@ void ScreenHandler::do_snipe()
         MsgBox("Failed to save\n"
                "Check save directory settings");
 
+    if (mw->is_draw_enabled)
+    // if draw mode is enabled open a drawing dialog with the canvas as a main image
+    {
+       DrawDialog draw_dialog(canvas);
+       draw_dialog.exec();
+       canvas = draw_dialog.get_image();
+    }
+
     if (selector.is_accepted() && mw->is_copy_enabled)
     {
         QClipboard *clipboard = QGuiApplication::clipboard();
         clipboard->setPixmap(canvas);
         mw->tray_say("Copied to clipboard :)");
     }
+
     mw->in_shot=false;
 }
