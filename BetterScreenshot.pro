@@ -63,8 +63,7 @@ DISTFILES += \
     PaintKEK_Widget/resources/cap.png \
     PaintKEK_Widget/resources/cat.jpg \
     PaintKEK_Widget/resources/join.png \
-    PaintKEK_Widget/resources/style.png \
-    todo
+    PaintKEK_Widget/resources/style.png
 
 SUBDIRS += \
     PaintKEK_Widget/PaintKEK_Widget.pro
