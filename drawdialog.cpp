@@ -67,9 +67,11 @@ DrawDialog::DrawDialog(QPixmap pixmap, QWidget *parent)
     action_rectangle->setIcon(QIcon(":/resources/icon/rectangle.png"));
     action_circle = new QAction("Circle");
     action_circle->setIcon(QIcon(":/resources/icon/circle.png"));
+    action_undo = new QAction("Undo");
     toolbar->addAction(action_pen);
     toolbar->addAction(action_rectangle);
     toolbar->addAction(action_circle);
+    toolbar->addAction(action_undo);
     QLabel *label = new QLabel(this);
     label->setText("Width:");
     toolbar->addWidget(label);
@@ -88,6 +90,7 @@ DrawDialog::DrawDialog(QPixmap pixmap, QWidget *parent)
     connect (action_pen, SIGNAL(triggered()), this, SLOT(pen_clicked()));
     connect (action_rectangle, SIGNAL(triggered()), this, SLOT(rectangle_clicked()));
     connect (action_circle, SIGNAL(triggered()), this, SLOT(circle_clicked()));
+    connect (action_undo, SIGNAL(triggered()), this, SLOT(undo()));
     connect (width_input, SIGNAL(textChanged(QString)), this, SLOT(width_input_changed()));
     connect (color_pick_button, SIGNAL(clicked()), this, SLOT(pick_color()));
 }
@@ -124,3 +127,7 @@ void DrawDialog::pick_color()
     image_label->pen.setColor(QColorDialog::getColor());
 }
 
+void DrawDialog::undo()
+{
+    image_label->undo();
+}

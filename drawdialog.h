@@ -35,6 +35,7 @@ class DrawDialog : public QDialog
     QAction* action_pen;
     QAction* action_rectangle;
     QAction* action_circle;
+    QAction* action_undo;
 
 public:
     explicit DrawDialog(QPixmap pixmap, QWidget *parent = nullptr);
@@ -47,6 +48,7 @@ private slots:
     void circle_clicked();
     void width_input_changed();
     void pick_color();
+    void undo();
 
 };
 

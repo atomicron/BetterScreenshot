@@ -13,6 +13,7 @@
 //#include <QElapsedTimer>
 
 #include "drawdialog.h"
+#include "PaintKEK_Widget/paintkek.h"
 
 #include <cmath>
 
@@ -131,17 +132,20 @@ void ScreenHandler::do_snipe()
     QRect area = selector.get_area();
     canvas = canvas.copy(area);
 
-    if (selector.is_accepted() && mw->is_auto_save_enabled && !canvas.save(get_absolute_save_path(), "", mw->get_quality()))
-        MsgBox("Failed to save\n"
-               "Check save directory settings");
-
     if (selector.is_accepted() && mw->is_draw_enabled)
     // if draw mode is enabled open a drawing dialog with the canvas as a main image
     {
-       DrawDialog draw_dialog(canvas);
-       draw_dialog.exec();
-       canvas = draw_dialog.get_image();
+        PaintKEK paintKEK;
+        paintKEK.setImage(canvas);
+        paintKEK.exec();
+        qDebug () << "Waiting";
+        canvas = paintKEK.getImage();
+        qDebug () << "New canvas";
     }
+
+    if (selector.is_accepted() && mw->is_auto_save_enabled && !canvas.save(get_absolute_save_path(), "", mw->get_quality()))
+        MsgBox("Failed to save\n"
+               "Check save directory settings");
 
     if (selector.is_accepted() && mw->is_copy_enabled)
     {

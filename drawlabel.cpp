@@ -18,6 +18,12 @@ DrawLabel::DrawLabel(QPixmap pm, QWidget *parent)
     setLayout(gl);
 
     setCursor(Qt::CrossCursor);
+    painter = new QPainter(&pixmap);
+}
+
+DrawLabel::~DrawLabel()
+{
+    painter->end();
 }
 
 DrawLabel::Tool DrawLabel::current_tool = DrawLabel::Tool::Pen;
@@ -38,12 +44,17 @@ void DrawLabel::mouseMoveEvent(QMouseEvent* event)
 
 void DrawLabel::mouseReleaseEvent(QMouseEvent* event)
 {
+
+    painter->save();
+    painter->drawPixmap(0, 0, copy);
+
     is_painting = false;
     update();
 }
 
 void DrawLabel::paintEvent(QPaintEvent *event)
 {
+
 
     if (start_painting)
     {
@@ -52,34 +63,39 @@ void DrawLabel::paintEvent(QPaintEvent *event)
     }
     if (is_painting)
     {
-        // IF PEN SELECTED
-        if (current_tool == Pen)
-        {
-            QPainter painter(&clean_pix);
-            painter.setPen(pen);
-            painter.drawLine(prev, next);
-            prev = next;
-        }
-        // ENDIF
+        //        if (!painter)
+        //            painter = new QPainter(&clean_pix);
+        //                // IF PEN SELECTED
+        //                if (current_tool == Pen)
+        //                {
+        //                    QPainter painter(&clean_pix);
+        //                    painter.setPen(pen);
+        //                    painter.drawLine(prev, next);
+        //                    prev = next;
+        //                }
+        //                // ENDIF
 
         // If any of the other will be selected.
         // Constantly make a copy of your "clean" pixmap
-        QPixmap copy = clean_pix.copy();
+        copy = clean_pix.copy();
         // IF RECTANGLE
         if (current_tool == Rectangle)
         {
-            QPainter painter(&copy);
-            painter.setPen(pen);
-            painter.drawRoundedRect(QRect(prev, next), 5, 5);
+            //            painter = new QPainter(&copy);
+            //            painter->
+
+            //            painter->setPen(pen);
+            //            painter->drawRoundedRect(QRect(prev, next), 5, 5);
+            //            painter->save();
         }
         // ENDIF
 
         // IF CIRCLE SELECTED
         if (current_tool == Circle)
         {
-            QPainter painter(&copy);
-            painter.setPen(pen);
-            painter.drawEllipse(QRect(prev, next));
+            QPainter pai(&copy);
+            pai.setPen(pen);
+            pai.drawEllipse(QRect(prev, next));
         }
         // ENDIF
         label->setPixmap(copy);
@@ -94,4 +110,11 @@ QPixmap DrawLabel::get_image()
 void DrawLabel::set_tool(Tool t)
 {
     current_tool = t;
+}
+
+void DrawLabel::undo()
+{
+    painter->restore();
+    label->setPixmap(pixmap);
+    qDebug() << "Restoring painter";
 }
