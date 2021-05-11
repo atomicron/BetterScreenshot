@@ -10,17 +10,15 @@
 #include <QGuiApplication>
 #include <QPixmap>
 #include <QPainter>
-//#include <QElapsedTimer>
 
-#include "drawdialog.h"
 #include "PaintKEK_Widget/paintkek.h"
 
 #include <cmath>
 
-QString get_random_suffix()
+QString rand_alnum(int len)
 {
     QString str;
-    for (int i=0;i<3;++i)
+    for (int i=0;i<len;++i)
     {
         int rand1 = (rand() % ('Z'-'A')) + 'A';
         int rand2 = (rand() % ('z'-'a')) + 'a';
@@ -42,7 +40,7 @@ const QString ScreenHandler::get_absolute_save_path()
     QString absolute_path = save_path + "/" + name + format;
 
     while (QFile::exists(absolute_path)) {
-        QString random_suffix = get_random_suffix();
+        QString random_suffix = rand_alnum(3);
         absolute_path = save_path + "/" + name + "_" + random_suffix + format;
     }
     return absolute_path;

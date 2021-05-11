@@ -12,8 +12,6 @@ SOURCES += \
     PaintKEK_Widget/graphicsscene.cpp \
     PaintKEK_Widget/paintkek.cpp \
     PaintKEK_Widget/stylepicker.cpp \
-    drawdialog.cpp \
-    drawlabel.cpp \
     misc/lock.cpp \
     misc/msgbox.cpp \
     areaselector.cpp \
@@ -28,8 +26,6 @@ HEADERS += \
     PaintKEK_Widget/graphicsscene.h \
     PaintKEK_Widget/paintkek.h \
     PaintKEK_Widget/stylepicker.h \
-    drawdialog.h \
-    drawlabel.h \
     misc/lock.h \
     misc/msgbox.h \
     misc/os.h \
