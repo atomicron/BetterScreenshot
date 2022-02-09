@@ -4,8 +4,10 @@
 
 #include "misc/os.h"
 
+#if WINDOWS_OS
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
+#endif
 
 KeyHandler::KeyHandler(MainWindow *parent) : mw(parent) {}
 
@@ -58,6 +60,7 @@ void KeyHandler::mw_do_print_screen()
     mw->do_print_screen();
 }
 
+#if WINDOWS_OS
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
     if (nCode < 0)
@@ -105,3 +108,4 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
     // https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/ms644985(v=vs.85)
     // Return 1 if we don't want others to receive the print screen signal
 }
+#endif

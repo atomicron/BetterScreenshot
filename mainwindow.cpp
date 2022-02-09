@@ -4,7 +4,8 @@
 #include "misc/msgbox.h"
 #include "areaselector.h"
 
-#include "drawlabel.h"
+// ??? Wtf is this
+//#include "drawlabel.h"
 
 #include <QCloseEvent>
 #include <QDir>

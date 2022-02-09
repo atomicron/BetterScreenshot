@@ -4,8 +4,10 @@
 #include <QObject>
 
 // Windows
+#if WINDOWS_OS
 #include <windows.h>
 #include "Winuser.h"
+#endif
 
 class MainWindow;
 
@@ -14,7 +16,9 @@ class KeyHandler : public QObject
     Q_OBJECT
     MainWindow *mw;
 
+#if WINDOWS_OS
     HHOOK key_hook;
+#endif
 
     KeyHandler(KeyHandler&) {}
     KeyHandler& operator=(KeyHandler) {}

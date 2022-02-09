@@ -42,7 +42,7 @@ FORMS += \
     PaintKEK_Widget/stylepicker.ui \
     mainwindow.ui
 
-LIBS += -luser32
+win32: LIBS += -luser32
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
