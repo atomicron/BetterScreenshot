@@ -9,6 +9,27 @@ StylePicker::StylePicker(QWidget *parent) :
 
     setModal(true);
 
+    scrollArea = new QScrollArea(this);
+
+    // label test
+    QLabel *imageLabel = new QLabel;
+    QImage image("/home/localuser/Documents/nature.jpg");
+    imageLabel->setPixmap(QPixmap::fromImage(image));
+//    scrollArea->setBackgroundRole(QPalette::Dark);
+    scrollArea->setWidget(imageLabel);
+    // label test
+
+    // put the widget containing all the goodies into the scrollarea
+    scrollArea->setWidget(ui->widget);
+
+    // use a layout with only the scroll are in it, to fill the whole area
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->addWidget(scrollArea);
+    setLayout(layout);
+
+    // resize the window to 0.7(70%) of the screen
+    resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
+
     ui->buttonGroup1->addButton(ui->radioButton_1);
     ui->buttonGroup1->addButton(ui->radioButton_2);
     ui->buttonGroup1->addButton(ui->radioButton_3);

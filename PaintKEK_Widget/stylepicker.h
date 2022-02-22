@@ -5,6 +5,10 @@
 #include <QDebug>
 #include <QRadioButton>
 
+#include <QScrollArea>
+#include <QVBoxLayout>
+#include <QDesktopWidget>
+
 namespace Ui {
 class StylePicker;
 }
@@ -27,6 +31,8 @@ public:
 
 private:
     Ui::StylePicker *ui;
+
+    QScrollArea* scrollArea;
 
 private slots:
     void get_values();
