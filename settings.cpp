@@ -2,10 +2,36 @@
 #include "mainwindow.h"
 #include "misc/msgbox.h"
 
+#include "misc/os.h"
+
 Settings::Settings(MainWindow *parent)
     : QSettings(QSettings::UserScope, QString("BetterScreenshot"), QString("BetterScreenshot"), parent)
     , mw(parent)
 {
+}
+
+QString Settings::get_default_save_path()
+{
+    QString default_save_path; // = QDir::homePath() + "/Documents/BetterScreenshot";
+
+    // The name of the final destination folder/directory;
+    QString destination_folder = "BetterScreenshot";
+
+    // If Windows, use default save path C:/Users/USER/Pictures/BetterScreenshot
+#if WINDOWS_OS
+    QString windows_home_dir = "C:/Users/" + QDir::home();
+    QString windows_default_save_path = windows_home_dir + "/Pictures/" + destination_folder;
+    default_save_path = windows_default_save_path;
+#endif
+
+    // If Linux, use /home/USER/Pictures/BetterScreenshot
+#if LINUX_OS
+    QString linux_home_dir = QDir::homePath();
+    QString linux_default_save_path = linux_home_dir + "/Pictures/" + destination_folder;
+    default_save_path = linux_default_save_path;
+#endif
+
+    return default_save_path;
 }
 
 const QString PRINT_SCREEN_KEY = "PRINT_SCREEN_KEY";

@@ -1,9 +1,9 @@
 #include "paintwidget.h"
 #include "ui_paintwidget.h"
 
-PaintKEK::PaintKEK(QWidget *parent)
+PaintWidget::PaintWidget(QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::PaintKEK)
+    , ui(new Ui::PaintWidget)
 {
     ui->setupUi(this);
 
@@ -22,18 +22,18 @@ PaintKEK::PaintKEK(QWidget *parent)
     ui->graphicsView->show();
 }
 
-PaintKEK::~PaintKEK()
+PaintWidget::~PaintWidget()
 {
     delete ui;
 }
 
-void PaintKEK::setImage(QPixmap p)
+void PaintWidget::setImage(QPixmap p)
 {
 //    scene->clear();
     scene->push_back(p);
 }
 
-QPixmap PaintKEK::getImage()
+QPixmap PaintWidget::getImage()
 {
     scene->clearSelection();                                                  // Selections would also render to the file
     scene->setSceneRect(scene->itemsBoundingRect());                          // Re-shrink the scene to it's bounding contents
@@ -50,7 +50,7 @@ QPixmap PaintKEK::getImage()
 //    return ui->graphicsView->grab(ui->graphicsView->sceneRect().toRect());
 }
 
-void PaintKEK::init_actions()
+void PaintWidget::init_actions()
 {
     QAction* action_undo = new QAction("Undo");
     toolBar->addAction(action_undo);
@@ -76,40 +76,40 @@ void PaintKEK::init_actions()
     connect (action_style, SIGNAL(triggered()), this, SLOT(action_style_triggered()));
 }
 
-void PaintKEK::action_undo_triggered()
+void PaintWidget::action_undo_triggered()
 {
     scene->pop_back();
 }
 
-void PaintKEK::action_pen_triggered()
+void PaintWidget::action_pen_triggered()
 {
     scene->current_tool = GraphicsScene::PEN;
 }
 
-void PaintKEK::action_box_triggered()
+void PaintWidget::action_box_triggered()
 {
     scene->current_tool = GraphicsScene::BOX;
 }
 
-void PaintKEK::action_circle_triggered()
+void PaintWidget::action_circle_triggered()
 {
     scene->current_tool = GraphicsScene::CIRCLE;
 }
 
-void PaintKEK::action_color_triggered()
+void PaintWidget::action_color_triggered()
 {
     QColor color = QColorDialog::getColor();
     scene->pen.setColor(color);
 }
 
-void PaintKEK::action_width_triggered()
+void PaintWidget::action_width_triggered()
 {
     int width = QInputDialog::getInt(this, tr("PO-TA-TOES:"),
                      tr("Width:"), QLineEdit::Normal);
     scene->pen.setWidth(width);
 }
 
-void PaintKEK::action_style_triggered()
+void PaintWidget::action_style_triggered()
 {
     StylePicker picker;
     picker.exec();

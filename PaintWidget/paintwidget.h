@@ -1,5 +1,5 @@
-#ifndef PAINTKEK_H
-#define PAINTKEK_H
+#ifndef PaintWidget_H
+#define PaintWidget_H
 
 #include <QMainWindow>
 #include <QPen>
@@ -14,22 +14,22 @@
 #include <QAction>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class PaintKEK; }
+namespace Ui { class PaintWidget; }
 QT_END_NAMESPACE
 
-class PaintKEK : public QDialog
+class PaintWidget : public QDialog
 {
     Q_OBJECT
 
 public:
-    PaintKEK(QWidget *parent = nullptr);
-    ~PaintKEK();
+    PaintWidget(QWidget *parent = nullptr);
+    ~PaintWidget();
 
     void setImage(QPixmap p);
     QPixmap getImage();
 
 private:
-    Ui::PaintKEK *ui;
+    Ui::PaintWidget *ui;
     GraphicsScene *scene;
 
     QPoint start_point;
@@ -49,4 +49,4 @@ private slots:
     void action_style_triggered();
 
 };
-#endif // PAINTKEK_H
+#endif // PaintWidget_H

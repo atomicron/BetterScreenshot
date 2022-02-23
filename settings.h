@@ -17,7 +17,8 @@ public:
     explicit Settings(MainWindow* parent = nullptr);
 
     const QString get_save_path() const { return save_path; }
-    const QString default_save_path = QDir::homePath() + "/Documents/BetterScreenshot";
+
+    QString get_default_save_path();
 
     void load();
     void save();

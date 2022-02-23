@@ -38,8 +38,8 @@ MainWindow::MainWindow(QWidget *parent)
 //    log << "test me 123\r\n";
 
 
-    if (!QDir(settings->default_save_path).exists())
-        QDir().mkdir(settings->default_save_path);
+    if (!QDir(settings->get_default_save_path()).exists())
+        QDir().mkdir(settings->get_default_save_path());
 
     ui->combo_box->addItem("Full screenshot");
     ui->combo_box->addItem("Snipe");
@@ -257,7 +257,7 @@ void MainWindow::on_cb_custom_savepath_toggled(bool checked)
     ui->input_custom_path->setEnabled(checked);
     ui->btn_browse_dir->setEnabled(checked);
     if (!checked)
-        ui->input_custom_path->setText(settings->default_save_path);
+        ui->input_custom_path->setText(settings->get_default_save_path());
 }
 
 void MainWindow::on_btn_browse_dir_clicked()

@@ -133,11 +133,11 @@ void ScreenHandler::do_snipe()
     if (selector.is_accepted() && mw->is_draw_enabled)
     // if draw mode is enabled open a drawing dialog with the canvas as a main image
     {
-        PaintKEK paintKEK;
-        paintKEK.setImage(canvas);
-        paintKEK.exec();
+        PaintWidget PaintWidget;
+        PaintWidget.setImage(canvas);
+        PaintWidget.exec();
         qDebug () << "Waiting";
-        canvas = paintKEK.getImage();
+        canvas = PaintWidget.getImage();
         qDebug () << "New canvas";
     }
 
