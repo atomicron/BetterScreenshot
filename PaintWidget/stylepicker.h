@@ -16,7 +16,7 @@
 
 #if QT_VERSION == 0x050003
 // Works in Qt Creator 5.0.3
-#include  <QDesktopServices>
+#include <QDesktopServices>
 #endif
 
 namespace Ui {
