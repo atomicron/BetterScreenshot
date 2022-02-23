@@ -1,3 +1,6 @@
+// Used to help determine the OS
+// Defines LINUX_OS or WINDOWS_OS
+
 #ifndef OS_H
 #define OS_H
 

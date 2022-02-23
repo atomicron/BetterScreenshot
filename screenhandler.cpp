@@ -11,7 +11,7 @@
 #include <QPixmap>
 #include <QPainter>
 
-#include "PaintKEK_Widget/paintkek.h"
+#include "PaintWidget/paintwidget.h"
 
 #include <cmath>
 

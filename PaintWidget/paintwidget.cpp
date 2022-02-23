@@ -1,5 +1,5 @@
-#include "paintkek.h"
-#include "ui_paintkek.h"
+#include "paintwidget.h"
+#include "ui_paintwidget.h"
 
 PaintKEK::PaintKEK(QWidget *parent)
     : QDialog(parent)
