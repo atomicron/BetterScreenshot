@@ -27,8 +27,18 @@ StylePicker::StylePicker(QWidget *parent) :
     layout->addWidget(scrollArea);
     setLayout(layout);
 
+    // f*ck, have to abstract this class too because of the version
+#if QT_VERSION == 0x041000
+// Works in Qt Creator 4.10.0
     // resize the window to 0.7(70%) of the screen
     resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
+#endif
+
+#if QT_VERSION == 0x050003
+// Works in Qt Creator 5.0.3
+    // resize the window to 0.7(70%) of the screen
+    resize(QDesktopServices().availableGeometry(this).size() * 0.7);
+#endif
 
     ui->buttonGroup1->addButton(ui->radioButton_1);
     ui->buttonGroup1->addButton(ui->radioButton_2);

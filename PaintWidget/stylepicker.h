@@ -7,7 +7,17 @@
 
 #include <QScrollArea>
 #include <QVBoxLayout>
+
+
+#if QT_VERSION == 0x041000
+// Works in Qt Creator 4.10.0
 #include <QDesktopWidget>
+#endif
+
+#if QT_VERSION == 0x050003
+// Works in Qt Creator 5.0.3
+#include  <QDesktopServices>
+#endif
 
 namespace Ui {
 class StylePicker;

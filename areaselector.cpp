@@ -42,7 +42,9 @@ AreaSelector::AreaSelector(QPixmap pm, QWidget *parent) : QDialog(parent)
     painter.fillRect(QRect(0, 0, pm.size().width(), pm.size().height()), QColor("gray"));
 
     QPalette palette;
-    palette.setBrush(QPalette::Background, pm);
+    // f*cking versioning maan
+//    palette.setBrush(QPalette::Background, pm);
+    palette.setBrush(QPalette::Window, pm);
 
     setPalette(palette);
 

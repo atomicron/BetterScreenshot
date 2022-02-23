@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include "misc/os.h"
+
 // Windows
 #if WINDOWS_OS
 #include <windows.h>

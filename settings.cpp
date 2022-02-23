@@ -19,7 +19,8 @@ QString Settings::get_default_save_path()
 
     // If Windows, use default save path C:/Users/USER/Pictures/BetterScreenshot
 #if WINDOWS_OS
-    QString windows_home_dir = "C:/Users/" + QDir::home();
+//    QString windows_home_dir = "C:/Users/" + QDir::home();
+    QString windows_home_dir = QDir::homePath();
     QString windows_default_save_path = windows_home_dir + "/Pictures/" + destination_folder;
     default_save_path = windows_default_save_path;
 #endif
